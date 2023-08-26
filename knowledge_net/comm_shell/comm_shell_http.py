@@ -22,5 +22,5 @@ class NodeHTTPHandler(http.server.SimpleHTTPRequestHandler):
 
 class CommShellHTTP:
     @staticmethod
-    def reply(protocol_details: Any, chat_history: ChatHistory) -> ChatHistory:
+    def reply(chat_history: ChatHistory, protocol_details: Any) -> ChatHistory:
         raise NotImplementedError()

@@ -3,7 +3,7 @@ import streamlit as st
 
 from knowledge_net.chat.chat_event import MessageEvent
 from knowledge_net.chat.chat_history import ChatHistory
-from knowledge_net.knowledge_base.knowledge_base import Knowledgebase
+from knowledge_net.knowledgebase.knowledgebase import Knowledgebase
 
 st.title("The KnowledgeNet begins...")
 
