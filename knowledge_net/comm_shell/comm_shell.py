@@ -12,7 +12,7 @@ class CommShell:
     """
 
     @staticmethod
-    def reply(chat_history: ChatHistory, protocol: str, protocol_details: Any) -> ChatHistory:
+    def reply(kb_name: str, chat_history: ChatHistory, protocol: str, protocol_details: Any) -> ChatHistory:
         """Calls the reply method on the class implementing the protocol.
 
         We rely on the convention that modules are called `comm_shell_<protocol_name>`,
@@ -25,4 +25,4 @@ class CommShell:
         class_name = "CommShell" + protocol.capitalize()
         c = getattr(module, class_name)
         reply_method = getattr(c, "reply")
-        return reply_method(chat_history, protocol_details)
+        return reply_method(kb_name, chat_history, protocol_details)

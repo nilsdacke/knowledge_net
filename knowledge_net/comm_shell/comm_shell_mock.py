@@ -7,7 +7,7 @@ from knowledge_net.chat.chat_history import ChatHistory
 
 class CommShellMock:
     @staticmethod
-    def reply(chat_history: ChatHistory, protocol_details: Any) -> ChatHistory:
+    def reply(kb_name: str, chat_history: ChatHistory, protocol_details: Any) -> ChatHistory:
         message = random.choice(
             [
                 "Early to bed and early to rise, makes a man healthy, wealthy and wise.",

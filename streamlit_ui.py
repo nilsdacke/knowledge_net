@@ -1,6 +1,4 @@
 import streamlit as st
-# import random
-
 from knowledge_net.chat.chat_event import MessageEvent
 from knowledge_net.chat.chat_history import ChatHistory
 from knowledge_net.knowledgebase.knowledgebase import Knowledgebase
@@ -10,7 +8,12 @@ st.title("The KnowledgeNet begins...")
 # Initialize chat
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = ChatHistory()
-    st.session_state.kb = Knowledgebase(preferred_protocol='mock')
+
+if "kb" not in st.session_state:
+    Knowledgebase.clear_directory()
+    st.session_state.kb = Knowledgebase(name='my_knowledgebase',
+                                        preferred_protocol='http',
+                                        protocol_details={'http': {'url': "http://localhost:8001"}})
 
 for message in st.session_state.chat_history.get_messages():
     with st.chat_message(message.role):

@@ -1,5 +1,7 @@
 from enum import Enum
 from datetime import datetime, timedelta
+from typing import ClassVar
+
 from pydantic import BaseModel
 
 
@@ -20,6 +22,12 @@ class ChatEvent(BaseModel):
 
     def to_dict(self):
         return self.model_dump()
+
+    @staticmethod
+    def from_dict(d: dict) -> "ChatEvent":
+        assert 'event_type' in d, "Event type ('event_type') required"
+        event_class = event_classes[d['event_type']]
+        return event_class.parse_obj(d)
 
 
 class MessageEvent(ChatEvent):
@@ -42,3 +50,10 @@ class ReturnEvent(ChatEvent):
     caller: str
     called: str
     time_stamp: datetime
+
+
+event_classes: dict[str, type] = {
+    'message': MessageEvent,
+    'call': CallEvent,
+    'ret': ReturnEvent
+}

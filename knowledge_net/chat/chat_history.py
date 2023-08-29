@@ -1,7 +1,8 @@
 import copy
-from typing import List, Optional
+import json
+from typing import Optional, Any
 
-from knowledge_net.chat.chat_event import ChatEvent, EventType, MessageEvent
+from knowledge_net.chat.chat_event import ChatEvent, EventType
 
 
 class ChatHistory:
@@ -36,3 +37,21 @@ class ChatHistory:
     def extend(self, other: "ChatHistory"):
         """Appends another chat history to self."""
         self._history.extend(other._history)
+
+    @staticmethod
+    def from_dict_list(dict_list: list[dict[str, Any]]) -> "ChatHistory":
+        """Creates an instance from a list of dictionaries representing events."""
+        return ChatHistory([ChatEvent.from_dict(e) for e in dict_list])
+
+    @staticmethod
+    def from_json(json_data: str) -> "ChatHistory":
+        """Creates an instance from a json string."""
+        return ChatHistory.from_dict_list(json.loads(json_data))
+
+    def as_json(self) -> str:
+        """Returns this instance as a json string."""
+        return json.dumps(self.to_dict_list())
+
+    def to_dict_list(self) -> list[dict[str, Any]]:
+        """Returns a list of dictionaries representing this instance."""
+        return [e.to_dict() for e in self._history]
