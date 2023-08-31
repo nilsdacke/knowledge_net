@@ -35,6 +35,8 @@ class ChatEvent(BaseModel):
 
 
 class MessageEvent(ChatEvent):
+    """Chat history event representing a message."""
+
     originator: str = "user"
     role: Role = Role.user
     message_text: str
@@ -42,6 +44,8 @@ class MessageEvent(ChatEvent):
 
 
 class CallEvent(ChatEvent):
+    """Chat history event recorded when a knowledge base calls another."""
+
     event_type: EventType = EventType.call
     caller: str
     called: str
@@ -50,14 +54,17 @@ class CallEvent(ChatEvent):
 
 
 class ReturnEvent(ChatEvent):
+    """Chat history event recorded when a call from a knowledge base to another returns."""
+
     event_type: EventType = EventType.ret
     caller: str
     called: str
     time_stamp: datetime
 
 
+"""Dictionary providing the ChatEvent subclasses corresponding to strings."""
 event_classes: dict[str, type] = {
     'message': MessageEvent,
     'call': CallEvent,
-    'ret': ReturnEvent
+    'return': ReturnEvent
 }

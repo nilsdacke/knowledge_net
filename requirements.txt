@@ -1,4 +1,5 @@
 langchain
 streamlit
 sphinx
+sphinx-rtd-theme
 pydantic
