@@ -12,7 +12,8 @@ It is to Wikipedia, Google and ChatGPT what Bitcoin is to fiat currency and bank
 
 .. toctree::
 
-   api
+   API summary <api>
+   classes
 
 
 Indices and tables

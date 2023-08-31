@@ -33,3 +33,7 @@ exclude_patterns = []
 
 html_theme = 'alabaster'
 html_static_path = ['_static']
+html_theme_options = {
+    'sidebar_width': '300px',
+    'page_width': '1200px'
+}

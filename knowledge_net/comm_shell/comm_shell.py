@@ -15,9 +15,9 @@ class CommShell:
     def reply(kb_name: str, chat_history: ChatHistory, protocol: str, protocol_details: Any) -> ChatHistory:
         """Calls the reply method on the class implementing the protocol.
 
-        We rely on the convention that modules are called `comm_shell_<protocol_name>`,
-        for example `comm_shell_http` and classes `CommShell<Protocol_name>`, for example
-        `CommShellHttp`. The class should have a static `reply` method.
+        We rely on the convention that modules are called :code:`comm_shell_<protocol_name>`,
+        for example :code:`comm_shell_http` and classes :code:`CommShell<Protocol_name>`, for example
+        :code:`CommShellHttp`. The class should have a static :code:`reply` method.
         """
 
         module_name = "knowledge_net.comm_shell.comm_shell_" + protocol.lower()

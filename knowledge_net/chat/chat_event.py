@@ -4,18 +4,24 @@ from pydantic import BaseModel
 
 
 class EventType(str, Enum):
+    """Enum of event types in the chat history."""
+
     message = 'message'
     call = 'call'
     ret = 'return'
 
 
 class Role(str, Enum):
+    """Enum of roles assigned to chat messages."""
+
     system = 'system'
     user = 'user'
     assistant = 'assistant'
 
 
 class ChatEvent(BaseModel):
+    """Base class of chat history events."""
+
     event_type: EventType = EventType.message
 
     def to_dict(self):

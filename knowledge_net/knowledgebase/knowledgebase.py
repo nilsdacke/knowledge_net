@@ -13,7 +13,7 @@ class Knowledgebase:
     is called to make the connection.
 
     Knowledge bases can also run locally, in the same process as the caller. To implement a local knowledge base,
-    subclass `Knowledgebase` and implement the `_reply_local` method.
+    subclass :code:`Knowledgebase` and implement the :code:`_reply_local` method.
     """
 
     _directory: dict[str, "Knowledgebase"] = {}
