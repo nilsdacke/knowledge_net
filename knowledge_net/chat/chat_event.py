@@ -1,7 +1,5 @@
 from enum import Enum
 from datetime import datetime, timedelta
-from typing import ClassVar
-
 from pydantic import BaseModel
 
 

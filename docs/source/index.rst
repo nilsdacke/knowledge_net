@@ -3,13 +3,16 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to KnowledgeNet's documentation!
+The KnowledgeNet
 ========================================
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+The KnowledgeNet provides a decentralized mechanism for sharing and finding knowledge.
+It is to Wikipedia, Google and ChatGPT what Bitcoin is to fiat currency and banks.
 
+
+.. toctree::
+
+   api
 
 
 Indices and tables
