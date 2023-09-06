@@ -1,0 +1,21 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "knowledge_net"
+version = "0.0.1"
+authors = [
+  { name="Simon Andersson", email="j.s.andersson@gmail.com" },
+]
+description = "A decentralized network of knowledge bases."
+readme = "README.rst"
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/nilsdacke/knowledge_net"

@@ -3,3 +3,4 @@ streamlit
 sphinx
 sphinx-rtd-theme
 pydantic
+requests
