@@ -11,6 +11,14 @@ authors = [
 description = "A decentralized network of knowledge bases."
 readme = "README.rst"
 requires-python = ">=3.9"
+dependencies = [
+    "langchain",
+    "streamlit",
+    "sphinx",
+    "sphinx-rtd-theme",
+    "pydantic",
+    "requests"
+]
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
