@@ -1,3 +1,4 @@
+import socketserver
 from typing import Any
 import http.server
 import requests
@@ -34,6 +35,8 @@ class NodeHTTPHandler(http.server.BaseHTTPRequestHandler):
 
 
 class CommShellHttp:
+    """Handles replies over HTTP."""
+
     @staticmethod
     def reply(kb_name: str, chat_history: ChatHistory, protocol_details: Any) -> ChatHistory:
         if 'url' not in protocol_details:
@@ -43,3 +46,16 @@ class CommShellHttp:
         json_data = Knowledgebase.kb_and_history_as_dict(kb_name, chat_history)
         response = requests.post(url=protocol_details['url'], json=json_data, headers=headers)
         return ChatHistory.from_json(response.content.decode('utf-8'))
+
+
+class Server:
+    """Runs a Knowledge Net HTTP server."""
+
+    DEFAULT_PORT = 8000
+
+    @staticmethod
+    def serve(port: int = None):
+        port = port or Server.DEFAULT_PORT
+        with socketserver.TCPServer(("", port), NodeHTTPHandler) as httpd:
+            print("Serving at port", port)
+            httpd.serve_forever()
