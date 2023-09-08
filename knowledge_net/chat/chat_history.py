@@ -2,7 +2,9 @@ import copy
 import json
 from typing import Optional, Any
 
-from knowledge_net.chat.chat_event import ChatEvent, EventType
+from langchain.schema import BaseMessage, HumanMessage, AIMessage, SystemMessage
+
+from knowledge_net.chat.chat_event import ChatEvent, EventType, MessageEvent, Role
 
 
 class ChatHistory:
@@ -55,3 +57,23 @@ class ChatHistory:
     def to_dict_list(self) -> list[dict[str, Any]]:
         """Returns a list of dictionaries representing this instance."""
         return [e.to_dict() for e in self._history]
+
+    @staticmethod
+    def from_langchain_response(response: dict[str, Any]) -> "ChatHistory":
+        """Creates an instance representing the chat history continuation from the answer returned by Langchain."""
+        return ChatHistory([MessageEvent(role=Role.assistant, message_text=response['answer'])])
+
+    def to_langchain_question(self) -> dict[str, Any]:
+        """Returns a dictionary that can be passed to a Langchain conversational chain."""
+        langchain_messages = self.to_langchain_messages()
+        return {'question': langchain_messages[-1].content, 'chat_history': langchain_messages[:-1]}
+
+    def to_langchain_messages(self) -> list[BaseMessage]:
+        """Returns the message history as Langchain message instances."""
+        return [self.message_event_to_langchain(m) for m in self.get_messages()]
+
+    @staticmethod
+    def message_event_to_langchain(message_event: MessageEvent) -> BaseMessage:
+        """Converts a message event to a Langchain message instance."""
+        c = {Role.user: HumanMessage, Role.assistant: AIMessage, Role.system: SystemMessage}[message_event.role]
+        return c(content=message_event.message_text)

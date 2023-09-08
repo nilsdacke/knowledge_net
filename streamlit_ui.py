@@ -1,3 +1,4 @@
+import sys
 import streamlit as st
 from knowledge_net.chat.chat_event import MessageEvent
 from knowledge_net.chat.chat_history import ChatHistory
@@ -11,7 +12,8 @@ if "chat_history" not in st.session_state:
 
 if "kb" not in st.session_state:
     Knowledgebase.clear_directory()
-    st.session_state.kb = Knowledgebase(name='my_knowledgebase',
+    kb_name = 'my_knowledgebase' if len(sys.argv) == 1 else sys.argv[1]
+    st.session_state.kb = Knowledgebase(name=kb_name,
                                         preferred_protocol='http',
                                         protocol_details={'http': {'url': "http://localhost:8001"}})
 

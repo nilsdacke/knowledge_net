@@ -25,7 +25,15 @@ class ChatEvent(BaseModel):
     event_type: EventType = EventType.message
 
     def to_dict(self):
-        return self.model_dump()
+        """Represents the instance as a dictionary."""
+
+        # Work with both Pydantic version 1 and 2 since ChromaDb requires v1
+        if hasattr(self, "model_dump"):
+            # Use model_dump() for Pydantic version 2
+            return self.model_dump()
+        else:
+            # Use dict() for Pydantic version 1
+            return self.dict()
 
     @staticmethod
     def from_dict(d: dict) -> "ChatEvent":
