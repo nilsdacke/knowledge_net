@@ -1,6 +1,10 @@
 from enum import Enum
-from datetime import datetime, timedelta
+from datetime import datetime
+import pytz
 from pydantic import BaseModel
+
+
+DEFAULT_TIME_ZONE = 'GMT'
 
 
 class EventType(str, Enum):
@@ -55,19 +59,20 @@ class CallEvent(ChatEvent):
     """Chat history event recorded when a knowledge base calls another."""
 
     event_type: EventType = EventType.call
-    caller: str
+    caller: str = "user"
     called: str
-    time_stamp: datetime
-    time_out_limit: timedelta
+    time_stamp: str = datetime.now(tz=pytz.timezone(DEFAULT_TIME_ZONE)).isoformat()
+    time_out_seconds: int = 0
 
 
 class ReturnEvent(ChatEvent):
     """Chat history event recorded when a call from a knowledge base to another returns."""
 
     event_type: EventType = EventType.ret
-    caller: str
+    caller: str = ""
     called: str
-    time_stamp: datetime
+    time_stamp: str = datetime.now(tz=pytz.timezone(DEFAULT_TIME_ZONE)).isoformat()
+    error: str = ""
 
 
 """Dictionary providing the ChatEvent subclasses corresponding to strings."""

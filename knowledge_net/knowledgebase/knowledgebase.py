@@ -32,10 +32,11 @@ class Knowledgebase:
         self._protocol_details = protocol_details or {'mock': None}
         self._register()
 
-    def reply(self, chat_history: ChatHistory, protocol: Optional[str] = None) -> ChatHistory:
+    def reply(self, chat_history: ChatHistory, caller: str = "user", protocol: Optional[str] = None) -> ChatHistory:
         """Calls the knowledge base and returns the continuation of the chat history."""
 
         protocol = protocol or self.preferred_protocol
+        chat_history.with_call_event(caller=caller, called=self.name)
         if protocol == 'local':
             return self._reply_local(chat_history.copy())
         else:

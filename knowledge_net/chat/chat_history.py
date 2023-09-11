@@ -1,10 +1,11 @@
 import copy
 import json
+from datetime import datetime, timedelta
 from typing import Optional, Any
-
+import pytz
 from langchain.schema import BaseMessage, HumanMessage, AIMessage, SystemMessage
-
-from knowledge_net.chat.chat_event import ChatEvent, EventType, MessageEvent, Role
+from knowledge_net.chat.chat_event import ChatEvent, EventType, MessageEvent, Role, CallEvent, ReturnEvent, \
+    DEFAULT_TIME_ZONE
 
 
 class ChatHistory:
@@ -40,6 +41,36 @@ class ChatHistory:
         """Appends another chat history to self."""
         self._history.extend(other._history)
 
+    def with_call_event(self, caller: str = "user", called: str = "", time_out_limit: timedelta = 0) -> "ChatHistory":
+        """Adds a call event and returns self.
+
+        Should be called right before calling another knowledge base. This is done automatically in the method
+        :code:`Knowledgebase.reply`.
+        """
+        self.append(CallEvent(caller=caller,
+                              called=called,
+                              timestamp=datetime.now(tz=pytz.timezone(DEFAULT_TIME_ZONE)),
+                              time_out_limit=time_out_limit))
+        return self
+
+    def with_return_event(self, input_chat_history: "ChatHistory", error: Optional[str] = "") -> "ChatHistory":
+        """Adds a return event and returns self.
+
+        Should be called right before returning from a call to your knowledge base. This is the responsibility of the
+        knowledge base being called.
+
+        For example put :code:`return chat_history.with_return_event(chat_history)` as the last line of your
+        :code:`_repy_local` method.
+        """
+        last_event = input_chat_history._history[-1]
+        if last_event.event_type != EventType.call:
+            raise ValueError("The input chat history should end with a call event")
+
+        self.append(ReturnEvent(caller=last_event.caller,
+                                called=last_event.called,
+                                error=error))
+        return self
+
     @staticmethod
     def from_dict_list(dict_list: list[dict[str, Any]]) -> "ChatHistory":
         """Creates an instance from a list of dictionaries representing events."""
@@ -58,10 +89,18 @@ class ChatHistory:
         """Returns a list of dictionaries representing this instance."""
         return [e.to_dict() for e in self._history]
 
+    def __str__(self):
+        """Returns a user-friendly string representation."""
+        return self.as_json()
+
+    def __repr__(self):
+        """Returns a developer friendly string representation."""
+        return self.as_json()
+
     @staticmethod
-    def from_langchain_response(response: dict[str, Any]) -> "ChatHistory":
+    def from_langchain_response(response: dict[str, Any], originator: str = "user") -> "ChatHistory":
         """Creates an instance representing the chat history continuation from the answer returned by Langchain."""
-        return ChatHistory([MessageEvent(role=Role.assistant, message_text=response['answer'])])
+        return ChatHistory([MessageEvent(role=Role.assistant, message_text=response['answer'], originator=originator)])
 
     def to_langchain_question(self) -> dict[str, Any]:
         """Returns a dictionary that can be passed to a Langchain conversational chain."""
