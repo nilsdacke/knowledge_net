@@ -23,8 +23,11 @@ class NodeHTTPHandler(http.server.BaseHTTPRequestHandler):
         content_length = int(self.headers['Content-Length'])
         post_data = self.rfile.read(content_length)
 
-        knowledgebase, chat_history = Knowledgebase.kb_and_history_from_json(post_data.decode('utf-8'))
-        continuation = knowledgebase.reply(chat_history).as_json()
+        knowledgebase, chat_history, error = Knowledgebase.kb_and_history_from_json(post_data.decode('utf-8'))
+        if error:
+            continuation = ChatHistory.error(chat_history, error).as_json()
+        else:
+            continuation = knowledgebase.reply(chat_history).as_json()
 
         self.send_response(200)
         self.send_header('Content-type', 'application/json')

@@ -29,4 +29,8 @@ if prompt := st.chat_input("What do you want to learn about?"):
     for message in response.get_messages():
         with st.chat_message(message.role):
             st.markdown(message.message_text)
+    if response.returned_error():
+        called, error = response.get_error()
+        with st.chat_message("assistant"):
+            st.markdown(f"Knowledge base {called} error: \"{error}\"")
     st.session_state.chat_history.extend(response)

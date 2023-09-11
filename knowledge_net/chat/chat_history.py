@@ -1,7 +1,7 @@
 import copy
 import json
 from datetime import datetime, timedelta
-from typing import Optional, Any
+from typing import Optional, Any, Tuple
 import pytz
 from langchain.schema import BaseMessage, HumanMessage, AIMessage, SystemMessage
 from knowledge_net.chat.chat_event import ChatEvent, EventType, MessageEvent, Role, CallEvent, ReturnEvent, \
@@ -62,14 +62,34 @@ class ChatHistory:
         For example put :code:`return chat_history.with_return_event(chat_history)` as the last line of your
         :code:`_repy_local` method.
         """
+        self.append(self.return_event_from_chat_history(input_chat_history, error))
+        return self
+
+    @staticmethod
+    def return_event_from_chat_history(input_chat_history: "ChatHistory", error: Optional[str] = "") -> ReturnEvent:
+        """Creates a return event matching the call event at the end of the input chat history."""
         last_event = input_chat_history._history[-1]
         if last_event.event_type != EventType.call:
             raise ValueError("The input chat history should end with a call event")
 
-        self.append(ReturnEvent(caller=last_event.caller,
-                                called=last_event.called,
-                                error=error))
-        return self
+        return ReturnEvent(caller=last_event.caller, called=last_event.called, error=error)
+
+    @staticmethod
+    def error(input_chat_history: "ChatHistory", error: Optional[str] = "") -> "ChatHistory":
+        """Creates a chat history with a return event with an error message."""
+        return ChatHistory().with_return_event(input_chat_history=input_chat_history, error=error)
+
+    def returned_error(self):
+        """Returns true if the last event is a return event with an error."""
+        return self._history and self._history[-1].event_type == EventType.ret and self._history[-1].error
+
+    def get_error(self) -> Tuple[str, str]:
+        """Reports the called knowledge base name and the error if an error was returned.
+
+        Check :code:`returned_error` before calling this.
+        """
+        assert self._history and self._history[-1].event_type == EventType.ret
+        return self._history[-1].called, self._history[-1].error
 
     @staticmethod
     def from_dict_list(dict_list: list[dict[str, Any]]) -> "ChatHistory":

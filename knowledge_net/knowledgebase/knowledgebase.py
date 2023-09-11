@@ -64,16 +64,24 @@ class Knowledgebase:
         return self._protocol_details[protocol]
 
     @staticmethod
-    def kb_and_history_from_json(json_data: str) -> Tuple["Knowledgebase", ChatHistory]:
+    def kb_and_history_from_json(json_data: str) -> Tuple["Knowledgebase", ChatHistory, str]:
         """Returns Knowledgebase and ChatHistory objects from json data."""
 
         data_dict = json.loads(json_data)
         assert 'knowledgebase' in data_dict, "Knowledgebase key ('knowledgebase') required"
         assert 'chat_history' in data_dict, "Chat history key ('chat_history') required"
+
         kb_name = data_dict['knowledgebase']
-        knowledgebase: "Knowledgebase" = Knowledgebase.kb_by_name(kb_name)
+
+        error: str = ""
+        knowledgebase: Optional["Knowledgebase"] = None
+
+        if Knowledgebase.has_kb(kb_name):
+            knowledgebase = Knowledgebase.kb_by_name(kb_name)
+        else:
+            error = f"Knowledge base {kb_name} not found"
         chat_history: ChatHistory = ChatHistory.from_dict_list(data_dict['chat_history'])
-        return knowledgebase, chat_history
+        return knowledgebase, chat_history, error
 
     @staticmethod
     def kb_and_history_as_dict(kb_name: str, chat_history: ChatHistory) -> dict[str, Any]:
@@ -84,6 +92,11 @@ class Knowledgebase:
     def kb_and_history_as_json(kb_name: str, chat_history: ChatHistory) -> str:
         """Creates a json representation of the knowledge base name and the chat history."""
         return json.dumps(Knowledgebase.kb_and_history_as_dict(kb_name, chat_history))
+
+    @staticmethod
+    def has_kb(kb_name: str) -> bool:
+        """Returns true if the knowledge base is in the knowledge base directory."""
+        return kb_name in Knowledgebase._directory
 
     @staticmethod
     def kb_by_name(kb_name: str) -> "Knowledgebase":
