@@ -13,7 +13,7 @@ if "chat_history" not in st.session_state:
 if "kb" not in st.session_state:
     Knowledgebase.clear_directory()
     kb_name = 'my_knowledgebase' if len(sys.argv) == 1 else sys.argv[1]
-    st.session_state.kb = Knowledgebase(name=kb_name,
+    st.session_state.kb = Knowledgebase(identifier=kb_name,
                                         preferred_protocol='http',
                                         protocol_details={'http': {'url': "http://localhost:8001"}})
 

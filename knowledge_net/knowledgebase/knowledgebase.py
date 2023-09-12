@@ -16,46 +16,47 @@ class Knowledgebase:
     subclass :code:`Knowledgebase` and implement the :code:`_reply_local` method.
     """
 
-    _directory: dict[str, "Knowledgebase"] = {}
-    """Directory of the knowledge bases known to the running process
-    
-    The knowledge bases include the "main" knowledge base (local or remote) presented by your server or local UI,
-    local knowledge bases running in the same process, and knowledge bases accessed remotely.    
-    """
+    _top_level_directory: dict[str, "Knowledgebase"] = {}
+    """Directory of knowledge bases exposed to the outside"""
 
     def __init__(self,
-                 name: str,
+                 identifier: str,
+                 display_name: Optional[str] = None,
                  preferred_protocol: str = 'local',
-                 protocol_details: Optional[dict[str, Any]] = None):
-        self.name = name
+                 protocol_details: Optional[dict[str, Any]] = None,
+                 make_public: bool = True):
+        self.identifier = identifier
+        self.display_name = display_name or identifier
         self.preferred_protocol = preferred_protocol
         self._protocol_details = protocol_details or {'mock': None}
-        self._register()
+        if make_public:
+            self._register()
 
     def reply(self, chat_history: ChatHistory, caller: str = "user", protocol: Optional[str] = None) -> ChatHistory:
         """Calls the knowledge base and returns the continuation of the chat history."""
 
         protocol = protocol or self.preferred_protocol
-        chat_history.with_call_event(caller=caller, called=self.name)
+        chat_history.with_call_event(caller=caller, called=self.identifier)
         if protocol == 'local':
             return self._reply_local(chat_history.copy())
         else:
-            return CommShell.reply(self.name, chat_history, protocol, self.get_details_for_protocol(protocol))
+            return CommShell.reply(self.identifier, chat_history, protocol, self.get_details_for_protocol(protocol))
 
     def _reply_local(self, chat_history: ChatHistory) -> ChatHistory:
         """Override this to create a knowledge base that runs locally in the same process as the caller."""
         raise NotImplementedError("Need to reimplement to run a local knowledgebase")
 
     def _register(self):
-        """Enters the knowledge base into the local knowledge base directory."""
+        """Enters the knowledge base into the top level knowledge base directory."""
 
-        if self.name in Knowledgebase._directory:
+        if self.identifier in Knowledgebase._top_level_directory:
             raise ValueError("Knowledgebase name must be unique")
-        Knowledgebase._directory[self.name] = self
+        Knowledgebase._top_level_directory[self.identifier] = self
 
     @staticmethod
     def clear_directory():
-        Knowledgebase._directory = {}
+        """Empties the top level knowledge base directory."""
+        Knowledgebase._top_level_directory = {}
 
     def get_details_for_protocol(self, protocol: str) -> Any:
         """Returns the protocol details for the knowledgebase and a protocol."""
@@ -96,12 +97,12 @@ class Knowledgebase:
     @staticmethod
     def has_kb(kb_name: str) -> bool:
         """Returns true if the knowledge base is in the knowledge base directory."""
-        return kb_name in Knowledgebase._directory
+        return kb_name in Knowledgebase._top_level_directory
 
     @staticmethod
     def kb_by_name(kb_name: str) -> "Knowledgebase":
         """Returns a knowledge base using its unique name."""
 
-        if kb_name not in Knowledgebase._directory:
+        if kb_name not in Knowledgebase._top_level_directory:
             raise ValueError(f"Knowledgebase {kb_name} not found")
-        return Knowledgebase._directory[kb_name]
+        return Knowledgebase._top_level_directory[kb_name]
