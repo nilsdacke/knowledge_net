@@ -14,7 +14,7 @@ if "kb" not in st.session_state:
     Knowledgebase.clear_directory()
     kb_name = 'my_knowledgebase' if len(sys.argv) == 1 else sys.argv[1]
     st.session_state.kb = Knowledgebase(identifier=kb_name,
-                                        preferred_protocol='http',
+                                        protocol='http',
                                         protocol_details={'http': {'url': "http://localhost:8001"}})
 
 for message in st.session_state.chat_history.get_messages():
