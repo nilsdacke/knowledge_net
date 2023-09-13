@@ -15,6 +15,7 @@ It is to Wikipedia, Google and ChatGPT what Bitcoin is to fiat currency and bank
    overview
    serving
    knowledgebase
+   chat_history
    local_and_remote
    instantiation
    protocols
