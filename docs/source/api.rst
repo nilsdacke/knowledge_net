@@ -1,3 +1,5 @@
+.. _api:
+
 Summary of modules and classes
 ------------------------------
 

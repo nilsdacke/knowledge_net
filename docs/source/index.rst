@@ -15,13 +15,16 @@ It is to Wikipedia, Google and ChatGPT what Bitcoin is to fiat currency and bank
    overview
    serving
    knowledgebase
-   classes
-   api
+   local_and_remote
+   instantiation
+   protocols
 
 
-Indices and tables
+Reference
 ==================
 
+* :ref:`classes`
+* :ref:`api`
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
