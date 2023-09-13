@@ -43,11 +43,13 @@ class Knowledgebase:
         protocol = protocol or self.protocol
         chat_history.with_call_event(caller=caller, called=self.identifier)
         if protocol == 'local':
-            return self._reply_local(chat_history.copy())
+            continuation, error = self._reply_local(chat_history.copy())
         else:
-            return CommShell.reply(self.identifier, chat_history, protocol, self.get_details_for_protocol(protocol))
+            continuation, error = \
+                CommShell.reply(self.identifier, chat_history, protocol, self.get_details_for_protocol(protocol))
+        return continuation.with_return_event(chat_history, error=error or "")
 
-    def _reply_local(self, chat_history: ChatHistory) -> ChatHistory:
+    def _reply_local(self, chat_history: ChatHistory) -> Tuple[ChatHistory, Optional[str]]:
         """Override this to create a knowledge base that runs locally in the same process as the caller."""
         raise NotImplementedError("Need to reimplement to run a local knowledgebase")
 

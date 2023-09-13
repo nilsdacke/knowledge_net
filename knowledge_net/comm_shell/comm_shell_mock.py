@@ -1,5 +1,5 @@
 import random
-from typing import Any
+from typing import Any, Tuple, Optional
 
 from knowledge_net.chat.chat_event import Role, MessageEvent
 from knowledge_net.chat.chat_history import ChatHistory
@@ -7,7 +7,7 @@ from knowledge_net.chat.chat_history import ChatHistory
 
 class CommShellMock:
     @staticmethod
-    def reply(kb_name: str, chat_history: ChatHistory, protocol_details: Any) -> ChatHistory:
+    def reply(kb_name: str, chat_history: ChatHistory, protocol_details: Any) -> Tuple[ChatHistory, Optional[str]]:
         message = random.choice(
             [
                 "Early to bed and early to rise, makes a man healthy, wealthy and wise.",
@@ -20,4 +20,4 @@ class CommShellMock:
         )
         return ChatHistory([MessageEvent(originator="computer",
                                          role=Role.assistant,
-                                         message_text=message)])
+                                         message_text=message)]), None

@@ -1,5 +1,5 @@
 from importlib import import_module
-from typing import Any
+from typing import Any, Tuple, Optional
 
 from knowledge_net.chat.chat_history import ChatHistory
 
@@ -12,7 +12,8 @@ class CommShell:
     """
 
     @staticmethod
-    def reply(kb_name: str, chat_history: ChatHistory, protocol: str, protocol_details: Any) -> ChatHistory:
+    def reply(kb_name: str, chat_history: ChatHistory, protocol: str, protocol_details: Any) -> \
+            Tuple[ChatHistory, Optional[str]]:
         """Calls the reply method on the class implementing the protocol.
 
         We rely on the convention that modules are called :code:`comm_shell_<protocol_name>`,

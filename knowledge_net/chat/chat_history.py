@@ -56,11 +56,8 @@ class ChatHistory:
     def with_return_event(self, input_chat_history: "ChatHistory", error: Optional[str] = "") -> "ChatHistory":
         """Adds a return event and returns self.
 
-        Should be called right before returning from a call to your knowledge base. This is the responsibility of the
-        knowledge base being called.
-
-        For example put :code:`return chat_history.with_return_event(chat_history)` as the last line of your
-        :code:`_repy_local` method.
+        Should be called when returning from a call to your knowledge base. This is done automatically in the method
+        :code:`Knowledgebase.reply`.
         """
         self.append(self.return_event_from_chat_history(input_chat_history, error))
         return self

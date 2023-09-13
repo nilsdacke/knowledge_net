@@ -1,5 +1,5 @@
 import socketserver
-from typing import Any
+from typing import Any, Tuple, Optional
 import http.server
 import requests
 from knowledge_net.chat.chat_history import ChatHistory
@@ -41,14 +41,14 @@ class CommShellHttp:
     """Handles replies over HTTP."""
 
     @staticmethod
-    def reply(kb_name: str, chat_history: ChatHistory, protocol_details: Any) -> ChatHistory:
+    def reply(kb_name: str, chat_history: ChatHistory, protocol_details: Any) -> Tuple[ChatHistory, Optional[str]]:
         if 'url' not in protocol_details:
             raise ValueError("Missing required 'url' in protocol details")
         headers = {'Content-type': 'application/json', 'Accept': 'application/json'}
 
         json_data = Knowledgebase.kb_and_history_as_dict(kb_name, chat_history)
         response = requests.post(url=protocol_details['url'], json=json_data, headers=headers)
-        return ChatHistory.from_json(response.content.decode('utf-8'))
+        return ChatHistory.from_json(response.content.decode('utf-8')), None
 
 
 class Server:
