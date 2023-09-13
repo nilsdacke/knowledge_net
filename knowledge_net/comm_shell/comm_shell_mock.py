@@ -18,6 +18,6 @@ class CommShellMock:
                 "and times shall be good. We are the times. Such as we are, such are the times."
             ]
         )
-        return ChatHistory([MessageEvent(originator="computer",
+        return ChatHistory([MessageEvent(originator=kb_name,
                                          role=Role.assistant,
                                          message_text=message)]), None
