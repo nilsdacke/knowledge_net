@@ -42,7 +42,9 @@ parameters (:code:`kwargs`) needed to instantiate it.
             "display_name": "The world of Francis Galton",
             "protocol": "http",
             "protocol_details": {
-                "url": "http://localhost:8001"
+                "http": {
+                    "url": "http://localhost:8001"
+                }
             }
         }
     ]
