@@ -26,11 +26,13 @@ class Knowledgebase:
     def __init__(self,
                  identifier: str,
                  display_name: Optional[str] = None,
+                 description: str = None,
                  protocol: str = 'local',
                  protocol_details: Optional[dict[str, Any]] = None,
                  make_public: bool = True):
         self.identifier = identifier
         self.display_name = display_name or identifier
+        self.description = description
         self.protocol = protocol
         self._protocol_details = protocol_details or {'mock': None}
         self.knowledgebase_directory = []
