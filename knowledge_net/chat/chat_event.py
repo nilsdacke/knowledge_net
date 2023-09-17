@@ -11,6 +11,7 @@ class EventType(str, Enum):
     """Enum of event types in the chat history."""
 
     message = 'message'
+    summary = 'summary'
     call = 'call'
     ret = 'return'
 
@@ -21,6 +22,12 @@ class Role(str, Enum):
     system = 'system'
     user = 'user'
     assistant = 'assistant'
+
+
+class SummaryType(str, Enum):
+    """Enum of summary types."""
+
+    standalone_question = "standalone-question"
 
 
 class ChatEvent(BaseModel):
@@ -55,6 +62,16 @@ class MessageEvent(ChatEvent):
     hidden: bool = False
 
 
+class SummaryEvent(ChatEvent):
+    """Chat history event providing a summary of preceding conversation."""
+
+    originator: str = "user"
+    role: Role = Role.assistant
+    summary_type: SummaryType = SummaryType.standalone_question
+    summary_text: str
+    hidden: bool = False
+
+
 class CallEvent(ChatEvent):
     """Chat history event recorded when a knowledge base calls another."""
 
@@ -78,6 +95,7 @@ class ReturnEvent(ChatEvent):
 """Dictionary providing the ChatEvent subclasses corresponding to strings."""
 event_classes: dict[str, type] = {
     'message': MessageEvent,
+    'summary': SummaryEvent,
     'call': CallEvent,
     'return': ReturnEvent
 }
