@@ -52,13 +52,6 @@ class Knowledgebase:
         """Override this to create a knowledge base that runs locally in the same process as the caller."""
         raise NotImplementedError("Need to reimplement to run a local knowledgebase")
 
-    def _register(self):
-        """Enters the knowledge base into the top level knowledge base directory."""
-
-        if self.identifier in Knowledgebase._top_level_directory:
-            raise ValueError("Knowledgebase name must be unique")
-        Knowledgebase._top_level_directory[self.identifier] = self
-
     @staticmethod
     def clear_directory():
         """Empties the top level knowledge base directory."""
