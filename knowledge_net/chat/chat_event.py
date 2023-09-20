@@ -65,6 +65,7 @@ class MessageEvent(ChatEvent):
 class SummaryEvent(ChatEvent):
     """Chat history event providing a summary of preceding conversation."""
 
+    event_type: EventType = EventType.summary
     originator: str = "user"
     role: Role = Role.assistant
     summary_type: SummaryType = SummaryType.standalone_question

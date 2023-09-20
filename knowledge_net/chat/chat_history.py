@@ -5,7 +5,7 @@ from typing import Optional, Any, Tuple
 import pytz
 from langchain.schema import BaseMessage, HumanMessage, AIMessage, SystemMessage
 from knowledge_net.chat.chat_event import ChatEvent, EventType, MessageEvent, Role, CallEvent, ReturnEvent, \
-    DEFAULT_TIME_ZONE
+    DEFAULT_TIME_ZONE, SummaryType
 
 
 class ChatHistory:
@@ -29,8 +29,15 @@ class ChatHistory:
         """Makes a copy for passing between knowledge bases."""
         return copy.deepcopy(self)
 
-    def is_empty(self):
+    def is_empty(self) -> bool:
         return not self._history
+
+    def has_messages(self) -> bool:
+        return len(self.get_messages()) > 0
+
+    def has_summary(self, summary_type=SummaryType.standalone_question):
+        last_event = self.get_last_event()
+        return last_event and last_event.event_type == EventType.summary and last_event.summary_type == summary_type
 
     def get_last_event(self) -> ChatEvent:
         return self._history[-1] if not self.is_empty() else None
@@ -38,6 +45,13 @@ class ChatHistory:
     def get_messages(self, include_hidden: bool = False) -> list[ChatEvent]:
         """Returns the message events."""
         return [e for e in self._history if e.event_type == EventType.message and (include_hidden or not e.hidden)]
+
+    def get_last_question(self) -> Optional[str]:
+        if self.has_summary(SummaryType.standalone_question):
+            return self.get_last_event().summary_text
+        else:
+            messages = self.get_messages()
+            return messages[-1].message_text if messages else None
 
     def append(self, event: ChatEvent):
         """Appends an event to the end of the chat history."""

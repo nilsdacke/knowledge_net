@@ -83,7 +83,7 @@ class Knowledgebase:
         self.set_knowledgebase_directory_from_list(Knowledgebase.instances_from_json(kb_list_path))
 
     @staticmethod
-    def set_top_level_directory(knowledgebases: dict[str, dict]):
+    def set_top_level_directory(knowledgebases: dict[str, "Knowledgebase"]):
         Knowledgebase._top_level_directory = knowledgebases
 
     @staticmethod
@@ -96,7 +96,7 @@ class Knowledgebase:
         """Convenience method that sets the top level directory to a single knowledge base."""
         Knowledgebase.set_top_level_directory_from_list([knowledgebase])
 
-    def set_knowledgebase_directory(self, knowledgebases: dict[str, dict]):
+    def set_knowledgebase_directory(self, knowledgebases: dict[str, "Knowledgebase"]):
         self._knowledgebase_directory = knowledgebases
 
     def set_knowledgebase_directory_from_list(self, knowledgebases: list["Knowledgebase"]):
