@@ -28,16 +28,13 @@ class Knowledgebase:
                  display_name: Optional[str] = None,
                  description: str = None,
                  protocol: str = 'local',
-                 protocol_details: Optional[dict[str, Any]] = None,
-                 make_public: bool = True):
+                 protocol_details: Optional[dict[str, Any]] = None):
         self.identifier = identifier
         self.display_name = display_name or identifier
         self.description = description
         self.protocol = protocol
         self._protocol_details = protocol_details or {'mock': None}
-        self.knowledgebase_directory = {}
-        if make_public:
-            self._register()
+        self._knowledgebase_directory = {}
 
     def reply(self, chat_history: ChatHistory, caller: str = "user", protocol: Optional[str] = None) -> ChatHistory:
         """Calls the knowledge base and returns the continuation of the chat history."""
@@ -101,8 +98,13 @@ class Knowledgebase:
         as_dict = {e.identifier: e for e in knowledgebases}
         Knowledgebase.set_top_level_directory(as_dict)
 
+    @staticmethod
+    def share(knowledgebase: "Knowledgebase"):
+        """Convenience method that sets the top level directory to a single knowledge base."""
+        Knowledgebase.set_top_level_directory_from_list([knowledgebase])
+
     def set_knowledgebase_directory(self, knowledgebases: dict[str, dict]):
-        self.knowledgebase_directory = knowledgebases
+        self._knowledgebase_directory = knowledgebases
 
     def set_knowledgebase_directory_from_list(self, knowledgebases: list["Knowledgebase"]):
         as_dict = {e.identifier: e for e in knowledgebases}
@@ -139,7 +141,6 @@ class Knowledgebase:
             'display_name': d['display_name'],
             'description': d['description']
         }
-        kwargs['make_public'] = False
         knowledgebase = c(**standard_args, **kwargs)
         knowledgebase.load_knowledgebase_directory()
         return knowledgebase
@@ -147,7 +148,6 @@ class Knowledgebase:
     @staticmethod
     def instantiate_remote(d: dict[str, Any]) -> "Knowledgebase":
         """Creates a local remote knowledge base from a dictionary."""
-        d['make_public'] = False
         return Knowledgebase(**d)
 
     @staticmethod
