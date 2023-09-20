@@ -29,6 +29,12 @@ class ChatHistory:
         """Makes a copy for passing between knowledge bases."""
         return copy.deepcopy(self)
 
+    def is_empty(self):
+        return not self._history
+
+    def get_last_event(self) -> ChatEvent:
+        return self._history[-1] if not self.is_empty() else None
+
     def get_messages(self, include_hidden: bool = False) -> list[ChatEvent]:
         """Returns the message events."""
         return [e for e in self._history if e.event_type == EventType.message and (include_hidden or not e.hidden)]

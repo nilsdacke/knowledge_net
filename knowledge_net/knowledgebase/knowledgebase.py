@@ -35,7 +35,7 @@ class Knowledgebase:
         self.description = description
         self.protocol = protocol
         self._protocol_details = protocol_details or {'mock': None}
-        self.knowledgebase_directory = []
+        self.knowledgebase_directory = {}
         if make_public:
             self._register()
 
@@ -83,14 +83,30 @@ class Knowledgebase:
 
         kb_path = Path(Knowledgebase.DEFAULT_KB_PATH)
         top_level_path = kb_path / "top_level.json"
-        Knowledgebase._top_level_directory = Knowledgebase.instances_from_json(top_level_path)
+        Knowledgebase.set_top_level_directory_from_list(Knowledgebase.instances_from_json(top_level_path))
 
     def load_knowledgebase_directory(self):
         """Populates the knowledge base directory of this knowledge base."""
 
         kb_path = Path(Knowledgebase.DEFAULT_KB_PATH)
         kb_list_path = kb_path / (self.identifier + ".json")
-        self.knowledgebase_directory = Knowledgebase.instances_from_json(kb_list_path)
+        self.set_knowledgebase_directory_from_list(Knowledgebase.instances_from_json(kb_list_path))
+
+    @staticmethod
+    def set_top_level_directory(knowledgebases: dict[str, dict]):
+        Knowledgebase._top_level_directory = knowledgebases
+
+    @staticmethod
+    def set_top_level_directory_from_list(knowledgebases: list["Knowledgebase"]):
+        as_dict = {e.identifier: e for e in knowledgebases}
+        Knowledgebase.set_top_level_directory(as_dict)
+
+    def set_knowledgebase_directory(self, knowledgebases: dict[str, dict]):
+        self.knowledgebase_directory = knowledgebases
+
+    def set_knowledgebase_directory_from_list(self, knowledgebases: list["Knowledgebase"]):
+        as_dict = {e.identifier: e for e in knowledgebases}
+        self.set_knowledgebase_directory(as_dict)
 
     @staticmethod
     def instances_from_json(json_file: Path) -> list["Knowledgebase"]:
@@ -118,9 +134,13 @@ class Knowledgebase:
         kwargs = d['protocol_details']['kwargs']
         module = import_module(module_name)
         c = getattr(module, class_name)
-        d['protocol_details'] = {}
+        standard_args = {
+            'identifier': d['identifier'],
+            'display_name': d['display_name'],
+            'description': d['description']
+        }
         kwargs['make_public'] = False
-        knowledgebase = c(**d, **kwargs)
+        knowledgebase = c(**standard_args, **kwargs)
         knowledgebase.load_knowledgebase_directory()
         return knowledgebase
 
@@ -144,7 +164,7 @@ class Knowledgebase:
         knowledgebase: Optional["Knowledgebase"] = None
 
         if Knowledgebase.has_kb(kb_name):
-            knowledgebase = Knowledgebase.kb_by_name(kb_name)
+            knowledgebase = Knowledgebase.by_name(kb_name)
         else:
             error = f"Knowledge base {kb_name} not found"
         chat_history: ChatHistory = ChatHistory.from_dict_list(data_dict['chat_history'])
@@ -166,9 +186,18 @@ class Knowledgebase:
         return kb_name in Knowledgebase._top_level_directory
 
     @staticmethod
-    def kb_by_name(kb_name: str) -> "Knowledgebase":
+    def by_name(kb_name: str) -> "Knowledgebase":
         """Returns a knowledge base using its unique name."""
 
         if kb_name not in Knowledgebase._top_level_directory:
             raise ValueError(f"Knowledgebase {kb_name} not found")
         return Knowledgebase._top_level_directory[kb_name]
+
+    @staticmethod
+    def single_instance() -> "Knowledgebase":
+        """Returns the only public knowledge base if there is just one."""
+
+        n_knowledgebases = len(Knowledgebase._top_level_directory)
+        assert n_knowledgebases == 1, f"Assumed single knowledge base, found {n_knowledgebases}"
+        return next(iter(Knowledgebase._top_level_directory.values()))
+
