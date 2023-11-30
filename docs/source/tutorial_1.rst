@@ -5,6 +5,9 @@ Step 1: setting up the environment
 
 To get started, we need the KnowledgeNet framework to be installed.
 
+..  attention::
+    TODO Recommend virtual environment (conda)
+
 .. code-block:: bash
 
    $ pip install knowledgenet
