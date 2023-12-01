@@ -20,13 +20,13 @@ To create a vector data base with computer pioneer Charles Babbage's writings, r
 
 .. code-block:: bash
 
-   $
+   $ python build_database.py examples/documents/babbage/ db/babbage
 
 To make the knowledge base available to the world, run
 
 .. code-block:: bash
 
-   $
+   $ python http_server_rag.py babbage "Charles Babbage" db/babbage examples/meta/victorian_science_sources.json 8001
 
 Our Charles Babbage knowledge base is now served over HTTP! How do we talk to it? Run this:
 
@@ -34,13 +34,14 @@ Our Charles Babbage knowledge base is now served over HTTP! How do we talk to it
 
    $
 
-A chat page should appear in your browser. We can now have a conversation about Babbage's books. Try for example,
-"Tell me about the analytical engine."
+A chat page should appear in your browser. We can now have a conversation about Babbage's life and work.
+Try for example, "Tell me about the analytical engine."
 
 We will soon take a peek under the hood to better understand what we did. But first, let's create and launch two
 additional knowledge bases, about Charles Darwin and Francis Galton.
 
 .. code-block:: bash
 
-   $
+   $ python build_database.py examples/documents/darwin/ db/darwin
+   $ python build_database.py examples/documents/galton/ db/galton
 
