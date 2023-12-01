@@ -8,32 +8,17 @@ from knowledge_net.experimental.rag_knowledgebase.rag_knowledgebase import RAGKn
 from credentials import openai_api_key
 
 
-port: int = 8001
-
-if len(sys.argv) < 2 or len(sys.argv) > 3:
-    print("Usage: python http_server.py <knowledgebase identifier> [<port>]")
+if len(sys.argv) != 6:
+    print("Usage: python http_server.py <knowledgebase identifier> <display name> <database directory> "
+          "<source info file> <port>")
     sys.exit()
-elif len(sys.argv) == 3:
-    port = int(sys.argv[2])
 
 kb_name = sys.argv[1]
+display_name = sys.argv[2]
+database_location = Path(sys.argv[3])
+source_descriptions_file = Path(sys.argv[4])
+port = int(sys.argv[5])
 
-if kb_name == "victorian-science":
-    display_name = "Victorian Science"
-    database_location = Path("db/victorian-science")
-elif kb_name == "galton":
-    display_name = "Francis Galton"
-    database_location = Path("db/galton")
-elif kb_name == "darwin":
-    display_name = "Charles Darwin"
-    database_location = Path("db/darwin")
-elif kb_name == "babbage":
-    display_name = "Charles Babbage"
-    database_location = Path("db/babbage")
-else:
-    raise ValueError(f"Unknown knowledge base {kb_name}")
-
-source_descriptions_file = Path("meta/source_info.json")
 Knowledgebase.share(RAGKnowledgebase(database_location=database_location,
                                      source_descriptions_file=source_descriptions_file,
                                      identifier=kb_name,
