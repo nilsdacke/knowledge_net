@@ -41,4 +41,8 @@ additional knowledge bases, about Charles Darwin and Francis Galton.
 
    $ python build_database.py examples/documents/darwin/ db/darwin
    $ python build_database.py examples/documents/galton/ db/galton
+   $
+   $ python http_server_rag.py darwin "Charles Darwin" db/darwin examples/meta/victorian_science_sources.json 8002&
+   $ python http_server_rag.py galton "Francis Galton" db/galton examples/meta/victorian_science_sources.json 8003&
+
 
