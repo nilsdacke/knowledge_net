@@ -1,4 +1,5 @@
 .. _tutorial_4:
 
-Step 4: build your own
+Step 4: Build your own
 ================================
+

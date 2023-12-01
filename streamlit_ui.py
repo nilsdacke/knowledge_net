@@ -4,7 +4,7 @@ from knowledge_net.chat.chat_event import MessageEvent
 from knowledge_net.chat.chat_history import ChatHistory
 from knowledge_net.knowledgebase.knowledgebase import Knowledgebase
 
-st.title("The KnowledgeNet begins...")
+st.title("Welcome to KnowledgeNet")
 
 # Initialize chat
 if "chat_history" not in st.session_state:
@@ -12,10 +12,11 @@ if "chat_history" not in st.session_state:
 
 if "kb" not in st.session_state:
     Knowledgebase.clear_directory()
-    kb_name = 'my_knowledgebase' if len(sys.argv) == 1 else sys.argv[1]
+    kb_name = sys.argv[1]
+    url = sys.argv[2]
     st.session_state.kb = Knowledgebase(identifier=kb_name,
                                         protocol='http',
-                                        protocol_details={'http': {'url': "http://localhost:8001"}})
+                                        protocol_details={'http': {'url': url}})
 
 for message in st.session_state.chat_history.get_messages():
     with st.chat_message(message.role):

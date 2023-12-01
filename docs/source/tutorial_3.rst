@@ -1,6 +1,6 @@
 .. _tutorial_3:
 
-Step 3: a knowledge network
+Step 3: A knowledge network
 ================================
 
 Now for the best part. The central idea with KnowledgeNet is to allow knowledge bases to connect to each other,

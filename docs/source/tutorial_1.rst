@@ -1,6 +1,6 @@
 .. _tutorial_1:
 
-Step 1: setting up the environment
+Step 1: Setting up the environment
 ================================
 
 To get started, we need the KnowledgeNet framework to be installed.
