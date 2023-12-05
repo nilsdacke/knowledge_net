@@ -3,9 +3,6 @@
 Step 2: Simple knowledge bases
 ================================
 
-..  attention::
-    TODO make example data and scripts available to the user
-
 Let's create our first conversational knowledge base! The process for doing this starts with preparing text documents
 containing the knowledge we want to share and storing chunks of the documents into a vector database.
 
