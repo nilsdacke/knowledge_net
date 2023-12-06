@@ -20,7 +20,7 @@ class Knowledgebase:
 
     DEFAULT_KB_PATH = "knowledgebases"
 
-    _top_level_directory: dict[str, "Knowledgebase"] = {}
+    _public_knowledgebases: dict[str, "Knowledgebase"] = {}
     """List of knowledge bases exposed to the outside"""
 
     def __init__(self,
@@ -34,7 +34,7 @@ class Knowledgebase:
         self.description = description
         self.protocol = protocol
         self._protocol_details = protocol_details or {'mock': None}
-        self._knowledgebase_directory = {}
+        self._connected_knowledgebases = {}
 
     def reply(self, chat_history: ChatHistory, caller: str = "user", protocol: Optional[str] = None) -> ChatHistory:
         """Calls the knowledge base and returns the continuation of the chat history."""
@@ -53,9 +53,9 @@ class Knowledgebase:
         raise NotImplementedError("Need to reimplement to run a local knowledgebase")
 
     @staticmethod
-    def clear_directory():
-        """Empties the top level knowledge base directory."""
-        Knowledgebase._top_level_directory = {}
+    def clear_public_knowledgebases():
+        """Empties the list of public knowledgebases."""
+        Knowledgebase._public_knowledgebases = {}
 
     def get_details_for_protocol(self, protocol: str) -> Any:
         """Returns the protocol details for the knowledgebase and a protocol."""
@@ -73,35 +73,35 @@ class Knowledgebase:
 
         kb_path = Path(Knowledgebase.DEFAULT_KB_PATH)
         top_level_path = kb_path / "top_level.json"
-        Knowledgebase.set_top_level_directory_from_list(Knowledgebase.instances_from_json(top_level_path))
+        Knowledgebase.set_public_knowledgebases_from_list(Knowledgebase.instances_from_json(top_level_path))
 
-    def load_knowledgebase_directory(self):
+    def make_connected_knowledgebases(self):
         """Populates the knowledge base directory of this knowledge base."""
 
         kb_path = Path(Knowledgebase.DEFAULT_KB_PATH)
         kb_list_path = kb_path / (self.identifier + ".json")
-        self.set_knowledgebase_directory_from_list(Knowledgebase.instances_from_json(kb_list_path))
+        self.set_connected_knowledgebases_from_list(Knowledgebase.instances_from_json(kb_list_path))
 
     @staticmethod
-    def set_top_level_directory(knowledgebases: dict[str, "Knowledgebase"]):
-        Knowledgebase._top_level_directory = knowledgebases
+    def set_public_knowledgebases(knowledgebases: dict[str, "Knowledgebase"]):
+        Knowledgebase._public_knowledgebases = knowledgebases
 
     @staticmethod
-    def set_top_level_directory_from_list(knowledgebases: list["Knowledgebase"]):
+    def set_public_knowledgebases_from_list(knowledgebases: list["Knowledgebase"]):
         as_dict = {e.identifier: e for e in knowledgebases}
-        Knowledgebase.set_top_level_directory(as_dict)
+        Knowledgebase.set_public_knowledgebases(as_dict)
 
     @staticmethod
     def share(knowledgebase: "Knowledgebase"):
         """Convenience method that sets the top level directory to a single knowledge base."""
-        Knowledgebase.set_top_level_directory_from_list([knowledgebase])
+        Knowledgebase.set_public_knowledgebases_from_list([knowledgebase])
 
-    def set_knowledgebase_directory(self, knowledgebases: dict[str, "Knowledgebase"]):
-        self._knowledgebase_directory = knowledgebases
+    def set_connected_knowledgebases(self, knowledgebases: dict[str, "Knowledgebase"]):
+        self._connected_knowledgebases = knowledgebases
 
-    def set_knowledgebase_directory_from_list(self, knowledgebases: list["Knowledgebase"]):
+    def set_connected_knowledgebases_from_list(self, knowledgebases: list["Knowledgebase"]):
         as_dict = {e.identifier: e for e in knowledgebases}
-        self.set_knowledgebase_directory(as_dict)
+        self.set_connected_knowledgebases(as_dict)
 
     @staticmethod
     def instances_from_json(json_file: Path) -> list["Knowledgebase"]:
@@ -135,7 +135,7 @@ class Knowledgebase:
             'description': d['description']
         }
         knowledgebase = c(**standard_args, **kwargs)
-        knowledgebase.load_knowledgebase_directory()
+        knowledgebase.make_connected_knowledgebases()
         return knowledgebase
 
     @staticmethod
@@ -156,8 +156,8 @@ class Knowledgebase:
         error: str = ""
         knowledgebase: Optional["Knowledgebase"] = None
 
-        if Knowledgebase.has_kb(kb_name):
-            knowledgebase = Knowledgebase.by_name(kb_name)
+        if Knowledgebase.has_public_knowledgebase(kb_name):
+            knowledgebase = Knowledgebase.public_knowledgebase_by_name(kb_name)
         else:
             error = f"Knowledge base {kb_name} not found"
         chat_history: ChatHistory = ChatHistory.from_dict_list(data_dict['chat_history'])
@@ -174,23 +174,23 @@ class Knowledgebase:
         return json.dumps(Knowledgebase.kb_and_history_as_dict(kb_name, chat_history))
 
     @staticmethod
-    def has_kb(kb_name: str) -> bool:
-        """Returns true if the knowledge base is in the knowledge base directory."""
-        return kb_name in Knowledgebase._top_level_directory
+    def has_public_knowledgebase(kb_name: str) -> bool:
+        """Returns true if the knowledge base is in the list of public knowledgebases."""
+        return kb_name in Knowledgebase._public_knowledgebases
 
     @staticmethod
-    def by_name(kb_name: str) -> "Knowledgebase":
-        """Returns a knowledge base using its unique name."""
+    def public_knowledgebase_by_name(kb_name: str) -> "Knowledgebase":
+        """Returns a public knowledge base using its unique name."""
 
-        if kb_name not in Knowledgebase._top_level_directory:
+        if kb_name not in Knowledgebase._public_knowledgebases:
             raise ValueError(f"Knowledgebase {kb_name} not found")
-        return Knowledgebase._top_level_directory[kb_name]
+        return Knowledgebase._public_knowledgebases[kb_name]
 
     @staticmethod
-    def single_instance() -> "Knowledgebase":
+    def single_public_instance() -> "Knowledgebase":
         """Returns the only public knowledge base if there is just one."""
 
-        n_knowledgebases = len(Knowledgebase._top_level_directory)
+        n_knowledgebases = len(Knowledgebase._public_knowledgebases)
         assert n_knowledgebases == 1, f"Assumed single knowledge base, found {n_knowledgebases}"
-        return next(iter(Knowledgebase._top_level_directory.values()))
+        return next(iter(Knowledgebase._public_knowledgebases.values()))
 

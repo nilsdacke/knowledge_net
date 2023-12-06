@@ -3,9 +3,6 @@
 Step 2, continued
 ================================
 
-..  attention::
-    TODO provide code snippets
-
 Let us take a look into the KnowledgeNet source code to understand what we just did. Creating a vector database
 requires the following steps.
 

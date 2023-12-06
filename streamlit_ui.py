@@ -4,14 +4,14 @@ from knowledge_net.chat.chat_event import MessageEvent
 from knowledge_net.chat.chat_history import ChatHistory
 from knowledge_net.knowledgebase.knowledgebase import Knowledgebase
 
-st.title("Welcome to KnowledgeNet")
+st.title("Welcome to the KnowledgeNet")
 
 # Initialize chat
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = ChatHistory()
 
 if "kb" not in st.session_state:
-    Knowledgebase.clear_directory()
+    Knowledgebase.clear_public_knowledgebases()
     kb_name = sys.argv[1]
     url = sys.argv[2]
     st.session_state.kb = Knowledgebase(identifier=kb_name,
