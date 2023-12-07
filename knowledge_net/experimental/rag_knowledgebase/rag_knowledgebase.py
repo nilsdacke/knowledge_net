@@ -22,7 +22,7 @@ class RAGKnowledgebase(Knowledgebase):
         self.chain = ChainFactory.conversational_chain(database_location, openai_api_key=openai_api_key,
                                                        source_descriptions=source_descriptions)
 
-    def _reply_local(self, chat_history: ChatHistory) -> Tuple[ChatHistory, Optional[str]]:
+    def _reply(self, chat_history: ChatHistory) -> Tuple[ChatHistory, Optional[str]]:
         langchain_question = chat_history.to_langchain_question()
         langchain_response = self.chain(langchain_question)
         return ChatHistory.from_langchain_response(langchain_response, originator=self.identifier), None

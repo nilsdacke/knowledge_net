@@ -42,15 +42,15 @@ class Knowledgebase:
         protocol = protocol or self.protocol
         chat_history.with_call_event(caller=caller, called=self.identifier)
         if protocol == 'local':
-            continuation, error = self._reply_local(chat_history.copy())
+            continuation, error = self._reply(chat_history.copy())
         else:
             continuation, error = \
                 CommShell.reply(self.identifier, chat_history, protocol, self.get_details_for_protocol(protocol))
         return continuation.with_return_event(chat_history, error=error or "")
 
-    def _reply_local(self, chat_history: ChatHistory) -> Tuple[ChatHistory, Optional[str]]:
-        """Override this to create a knowledge base that runs locally in the same process as the caller."""
-        raise NotImplementedError("Need to reimplement to run a local knowledgebase")
+    def _reply(self, chat_history: ChatHistory) -> Tuple[ChatHistory, Optional[str]]:
+        """Override this to define the behavior of your knowledgebase."""
+        raise NotImplementedError("Need to reimplement _reply to create a knowledgebase")
 
     @staticmethod
     def clear_public_knowledgebases():
