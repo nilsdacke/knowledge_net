@@ -91,10 +91,9 @@ class Knowledgebase:
         as_dict = {e.identifier: e for e in knowledgebases}
         Knowledgebase.set_public_knowledgebases(as_dict)
 
-    @staticmethod
-    def share(knowledgebase: "Knowledgebase"):
-        """Convenience method that sets the top level directory to a single knowledge base."""
-        Knowledgebase.set_public_knowledgebases_from_list([knowledgebase])
+    def share(self):
+        """Makes the knowledgebase public."""
+        Knowledgebase._public_knowledgebases[self.identifier] = self
 
     def set_connected_knowledgebases(self, knowledgebases: dict[str, "Knowledgebase"]):
         self._connected_knowledgebases = knowledgebases

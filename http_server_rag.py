@@ -2,8 +2,6 @@ import sys
 from pathlib import Path
 
 from knowledge_net.comm_shell.comm_shell_http import Server
-from knowledge_net.knowledgebase.knowledgebase import Knowledgebase
-
 from knowledge_net.experimental.rag_knowledgebase.rag_knowledgebase import RAGKnowledgebase
 from credentials import openai_api_key
 
@@ -19,10 +17,10 @@ database_location = Path(sys.argv[3])
 source_descriptions_file = Path(sys.argv[4])
 port = int(sys.argv[5])
 
-Knowledgebase.share(RAGKnowledgebase(database_location=database_location,
-                                     source_descriptions_file=source_descriptions_file,
-                                     identifier=kb_name,
-                                     openai_api_key=openai_api_key,
-                                     display_name=display_name))
+RAGKnowledgebase(database_location=database_location,
+                 source_descriptions_file=source_descriptions_file,
+                 identifier=kb_name,
+                 openai_api_key=openai_api_key,
+                 display_name=display_name).share()
 
 Server.serve(port=port)
