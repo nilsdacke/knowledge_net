@@ -72,8 +72,8 @@ class Knowledgebase:
         """Populates the list of public knowledge bases."""
 
         kb_path = Path(Knowledgebase.DEFAULT_KB_PATH)
-        top_level_path = kb_path / "top_level.json"
-        Knowledgebase.set_public_knowledgebases_from_list(Knowledgebase.instances_from_json(top_level_path))
+        public_path = kb_path / "top_level.json"
+        Knowledgebase.set_public_knowledgebases_from_list(Knowledgebase.instances_from_json(public_path))
 
     def make_connected_knowledgebases(self):
         """Populates the knowledge base directory of this knowledge base."""
