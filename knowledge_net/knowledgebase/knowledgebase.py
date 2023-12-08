@@ -26,12 +26,12 @@ class Knowledgebase:
                  display_name: Optional[str] = None,
                  description: str = None,
                  protocol: str = 'local',
-                 protocol_details: Optional[dict[str, Any]] = None):
+                 protocol_details: Optional[Any] = None):
         self.identifier = identifier
         self.display_name = display_name or identifier
         self.description = description
         self.protocol = protocol
-        self._protocol_details = protocol_details or {'mock': None}
+        self._protocol_details = protocol_details
         self._connected_knowledgebases = {}
 
     def reply(self, chat_history: ChatHistory, caller: str = "user", protocol: Optional[str] = None) -> ChatHistory:
@@ -43,7 +43,7 @@ class Knowledgebase:
             continuation, error = self._reply(chat_history.copy())
         else:
             continuation, error = \
-                CommShell.reply(self.identifier, chat_history, protocol, self.get_details_for_protocol(protocol))
+                CommShell.reply(self.identifier, chat_history, protocol, self._protocol_details)
         return continuation.with_return_event(chat_history, error=error or "")
 
     def _reply(self, chat_history: ChatHistory) -> Tuple[ChatHistory, Optional[str]]:
@@ -54,12 +54,6 @@ class Knowledgebase:
     def clear_public_knowledgebases():
         """Empties the list of public knowledgebases."""
         Knowledgebase._public_knowledgebases = {}
-
-    def get_details_for_protocol(self, protocol: str) -> Any:
-        """Returns the protocol details for the knowledgebase and a protocol."""
-
-        assert protocol in self._protocol_details, f"No details for protocol {protocol}"
-        return self._protocol_details[protocol]
 
     def message(self, message_text: str) -> MessageEvent:
         """Creates a message event."""
