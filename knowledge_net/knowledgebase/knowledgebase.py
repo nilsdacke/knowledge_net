@@ -111,9 +111,13 @@ class Knowledgebase:
         :code:`<identifier>.json` lists connected knowledgebases for the knowledgebase named :code:`identifier`.
         """
 
-        with open(directory / file_name) as f:
-            dict_list = json.load(f)
-        return [Knowledgebase.from_dict(d, directory) for d in dict_list]
+        file = directory / file_name
+        if file.is_file():
+            with open(file) as f:
+                dict_list = json.load(f)
+            return [Knowledgebase.from_dict(d, directory) for d in dict_list]
+        else:
+            return []
 
     @staticmethod
     def from_dict(d: dict[str, Any], directory: Path) -> "Knowledgebase":
