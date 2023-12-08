@@ -15,10 +15,8 @@ class Knowledgebase:
     is called to make the connection.
 
     Knowledge bases can also run locally, in the same process as the caller. To implement a local knowledge base,
-    subclass :code:`Knowledgebase` and implement the :code:`_reply_local` method.
+    subclass :code:`Knowledgebase` and implement the :code:`_reply` method.
     """
-
-    DEFAULT_KB_PATH = "knowledgebases"
 
     _public_knowledgebases: dict[str, "Knowledgebase"] = {}
     """List of knowledge bases exposed to the outside"""
@@ -68,19 +66,17 @@ class Knowledgebase:
         return MessageEvent(originator=self.identifier, role=Role.assistant, message_text=message_text)
 
     @staticmethod
-    def load():
-        """Populates the list of public knowledge bases."""
+    def instantiate_public(directory: Path):
+        """Instantiates and shares knowledgebases from json configuration files."""
 
-        kb_path = Path(Knowledgebase.DEFAULT_KB_PATH)
-        public_path = kb_path / "top_level.json"
-        Knowledgebase.set_public_knowledgebases_from_list(Knowledgebase.instances_from_json(public_path))
+        instances = Knowledgebase.instances_from_json(directory, "public.json")
+        Knowledgebase.set_public_knowledgebases_from_list(instances)
 
-    def make_connected_knowledgebases(self):
-        """Populates the knowledge base directory of this knowledge base."""
+    def make_connected_knowledgebases(self, directory: Path):
+        """Instantiates the connected knowledgebases for this knowledgebase."""
 
-        kb_path = Path(Knowledgebase.DEFAULT_KB_PATH)
-        kb_list_path = kb_path / (self.identifier + ".json")
-        self.set_connected_knowledgebases_from_list(Knowledgebase.instances_from_json(kb_list_path))
+        instances = Knowledgebase.instances_from_json(directory, self.identifier + ".json")
+        self.set_connected_knowledgebases_from_list(instances)
 
     @staticmethod
     def set_public_knowledgebases(knowledgebases: dict[str, "Knowledgebase"]):
@@ -103,24 +99,33 @@ class Knowledgebase:
         self.set_connected_knowledgebases(as_dict)
 
     @staticmethod
-    def instances_from_json(json_file: Path) -> list["Knowledgebase"]:
-        """Makes a list of knowledge bases from a json specification."""
+    def instances_from_json(directory: Path, file_name: str) -> list["Knowledgebase"]:
+        """Makes a list of knowledge bases from a json specification.
 
-        with open(json_file) as f:
+        We instantiate the knowledgebases in the file :code:`directory / file_name`.
+        This works recursively in that a local knowledgebase can instantiate connected knowledgebases.
+        Connected knowledgebases are found in :code:`directory`.
+
+        In :code:`directory`, files are named according to the following convention:
+        :code:`public.json` lists public knowledgebases
+        :code:`<identifier>.json` lists connected knowledgebases for the knowledgebase named :code:`identifier`.
+        """
+
+        with open(directory / file_name) as f:
             dict_list = json.load(f)
-        return [Knowledgebase.from_dict(d) for d in dict_list]
+        return [Knowledgebase.from_dict(d, directory) for d in dict_list]
 
     @staticmethod
-    def from_dict(d: dict[str, Any]) -> "Knowledgebase":
+    def from_dict(d: dict[str, Any], directory: Path) -> "Knowledgebase":
         """Creates a single knowledge base from a dictionary."""
 
         if d['protocol'] == 'local':
-            return Knowledgebase.instantiate_local(d)
+            return Knowledgebase._instantiate_local(d, directory)
         else:
-            return Knowledgebase.instantiate_remote(d)
+            return Knowledgebase._instantiate_remote(d)
 
     @staticmethod
-    def instantiate_local(d: dict[str, Any]) -> "Knowledgebase":
+    def _instantiate_local(d: dict[str, Any], directory: Path) -> "Knowledgebase":
         """Creates a local knowledge base from a dictionary."""
 
         class_name = d['protocol_details']['class']
@@ -134,11 +139,11 @@ class Knowledgebase:
             'description': d['description']
         }
         knowledgebase = c(**standard_args, **kwargs)
-        knowledgebase.make_connected_knowledgebases()
+        knowledgebase.make_connected_knowledgebases(directory)
         return knowledgebase
 
     @staticmethod
-    def instantiate_remote(d: dict[str, Any]) -> "Knowledgebase":
+    def _instantiate_remote(d: dict[str, Any]) -> "Knowledgebase":
         """Creates a local remote knowledge base from a dictionary."""
         return Knowledgebase(**d)
 
