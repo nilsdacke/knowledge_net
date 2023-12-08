@@ -34,16 +34,15 @@ class Knowledgebase:
         self._protocol_details = protocol_details
         self._connected_knowledgebases = {}
 
-    def reply(self, chat_history: ChatHistory, caller: str = "user", protocol: Optional[str] = None) -> ChatHistory:
+    def reply(self, chat_history: ChatHistory, caller: str = "user") -> ChatHistory:
         """Calls the knowledge base and returns the continuation of the chat history."""
 
-        protocol = protocol or self.protocol
         chat_history.with_call_event(caller=caller, called=self.identifier)
-        if protocol == 'local':
+        if self.protocol == 'local':
             continuation, error = self._reply(chat_history.copy())
         else:
             continuation, error = \
-                CommShell.reply(self.identifier, chat_history, protocol, self._protocol_details)
+                CommShell.reply(self.identifier, chat_history, self.protocol, self._protocol_details)
         return continuation.with_return_event(chat_history, error=error or "")
 
     def _reply(self, chat_history: ChatHistory) -> Tuple[ChatHistory, Optional[str]]:
