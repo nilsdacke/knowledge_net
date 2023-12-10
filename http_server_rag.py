@@ -7,7 +7,7 @@ from credentials import openai_api_key
 
 
 if len(sys.argv) != 6:
-    print("Usage: python http_server.py <knowledgebase identifier> <display name> <database directory> "
+    print("Usage: python http_server_rag.py <knowledgebase identifier> <display name> <database directory> "
           "<source info file> <port>")
     sys.exit()
 
