@@ -21,6 +21,9 @@ class Knowledgebase:
     _public_knowledgebases: dict[str, "Knowledgebase"] = {}
     """List of knowledge bases exposed to the outside"""
 
+    keys = {}
+    """Dictionary of API keys"""
+
     def __init__(self,
                  identifier: str,
                  display_name: Optional[str] = None,
@@ -127,6 +130,8 @@ class Knowledgebase:
 
         class_name = d['protocol_details']['class']
         module_name = d['protocol_details']['module']
+        keys = {k: Knowledgebase.keys[k] for k in d['protocol_details']['keys']} \
+            if 'keys' in d['protocol_details'] else {}
         kwargs = d['protocol_details']['kwargs']
         module = import_module(module_name)
         c = getattr(module, class_name)
@@ -135,7 +140,8 @@ class Knowledgebase:
             'display_name': d['display_name'],
             'description': d['description']
         }
-        knowledgebase = c(**standard_args, **kwargs)
+
+        knowledgebase = c(**standard_args, **keys, **kwargs)
         knowledgebase.make_connected_knowledgebases(directory)
         return knowledgebase
 
