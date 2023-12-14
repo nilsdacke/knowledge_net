@@ -20,7 +20,7 @@ To make the knowledge base available to the world, run
 
 .. code-block:: bash
 
-   $ python http_server_rag.py babbage "Charles Babbage" db/babbage examples/meta/victorian_science_sources.json 8001&
+   $ python http_server_rag.py babbage "Charles Babbage" db/babbage examples/meta/victorian-science-sources.json 8001&
 
 Our Charles Babbage knowledge base is now served over HTTP! How do we talk to it? Run this:
 
@@ -39,7 +39,7 @@ additional knowledge bases, about Charles Darwin and Francis Galton.
    $ python build_database.py examples/documents/darwin/ db/darwin
    $ python build_database.py examples/documents/galton/ db/galton
    $
-   $ python http_server_rag.py darwin "Charles Darwin" db/darwin examples/meta/victorian_science_sources.json 8002&
-   $ python http_server_rag.py galton "Francis Galton" db/galton examples/meta/victorian_science_sources.json 8003&
+   $ python http_server_rag.py darwin "Charles Darwin" db/darwin examples/meta/victorian-science-sources.json 8002&
+   $ python http_server_rag.py galton "Francis Galton" db/galton examples/meta/victorian-science-sources.json 8003&
 
 

@@ -20,6 +20,13 @@ It is to Wikipedia, Google and ChatGPT what Bitcoin is to fiat currency and bank
    local_and_remote
    instantiation
    protocols
+
+
+Tutorial
+========================================
+
+.. toctree::
+
    tutorial
    tutorial_1
    tutorial_2
@@ -34,6 +41,3 @@ Reference
 
 * :ref:`classes`
 * :ref:`api`
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`

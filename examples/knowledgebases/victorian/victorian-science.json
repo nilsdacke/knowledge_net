@@ -1,0 +1,41 @@
+[
+	{
+		"identifier": "babbage",
+		"display_name": "Charles Babbage",
+		"description": "Charles Babbage, computation, Difference Engine, Analytical Engine.",
+		"protocol": "http",
+		"protocol_details": {
+			"url": "http://localhost:8001"
+		}
+	},
+	{
+		"identifier": "galton",
+		"display_name": "Francis Galton",
+		"description": "Francis Galton, genius, intelligence, finger prints, Africa, statistics, heredity, eugenics.",
+		"protocol": "http",
+		"protocol_details": {
+			"url": "http://localhost:8002"
+		}
+	},
+	{
+		"identifier": "darwin",
+		"display_name": "Charles Darwin",
+		"description": "Charles Darwin, heredity, survival of the fittest, Galapagos, the Beagle, natural history.",
+		"protocol": "http",
+		"protocol_details": {
+			"url": "http://localhost:8003"
+		}
+	},
+	{
+		"identifier": "general",
+		"display_name": "System",
+		"description": "All sorts of stuff.",
+		"protocol": "local",
+		"protocol_details": {
+			"module": "knowledge_net.experimental.routing_knowledgebase.constant_knowledgebase",
+			"class": "ConstantKnowledgebase",
+			"kwargs": {"fixed_message":  "I don't think I can help you with this question."}
+		}
+	}
+]
+
