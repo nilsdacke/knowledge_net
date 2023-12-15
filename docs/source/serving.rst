@@ -12,7 +12,7 @@ share it with the world. Easy:
     from my_knowledge.knowledgebase.my_knowledgebase import MyKnowledgebase
 
     PORT = 8001
-    _ = MyKnowledgebase()
+    MyKnowledgebase().share()
 
     Server.serve(port=PORT)
 

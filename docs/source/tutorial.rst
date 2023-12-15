@@ -3,21 +3,18 @@
 Tutorial overview
 ================================
 
-..  attention::
-    TODO picture, motivation
-
 In this brief tutorial, we will
 
 * Create conversational knowledge bases
 * Serve the knowledge bases over HTTP
-* Create a knowledge base that collects information from the others
+* Create a knowledge base that communicates with the others and collects information from them
 * Chat with our knowledge bases
 
 All we need is some documents containing the knowledge we want to share.
 Here, we will use the writings of three nineteenth century scientists, Charles Darwin, Francis Galton and
 Charles Babbage.
 
-We'll let the KnowledgeNet framework take care of everything else. This includes creating the knowledge base and
+The KnowledgeNet framework takes care of everything else. This includes creating the knowledge base and
 serving it over HTTP
 or, in the near future, other communication protocols. Importantly, the framework supports communication between
-knowledge bases. It also provides a user interface for the conversations.
+knowledge bases. It also provides a simple user interface for the conversations.
