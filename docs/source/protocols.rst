@@ -17,5 +17,5 @@ The interface of the method is shown below.
     @staticmethod
     def reply(kb_name: str, chat_history: ChatHistory, protocol_details: Any) -> Tuple[ChatHistory, Optional[str]]:
 
-Now, if you instantiate a knowledge base with protocol=<my_protocol>, calls to it will be automatically dispatched
+Now, if you instantiate a knowledge base with :code:`protocol=<my_protocol>`, calls to it will be automatically dispatched
 through your protocol.

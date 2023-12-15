@@ -11,13 +11,12 @@ Below we instantiate a remote knowledge base.
 .. code-block:: python
 
     remote_knowledgebase = Knowledgebase(
-        identifier="history_kb",
+        identifier="history",
         display_name="World of history",
         protocol="http",
         protocol_details={
             "url": "my_knowledgebase.net"
-        },
-        make_public=False
+        }
     )
 
 We can now call this knowledge base exactly like you would a local one, using its :code:`reply` method.

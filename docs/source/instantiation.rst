@@ -4,19 +4,19 @@ More on knowledge base instantiation
 ======================================
 
 So far, we have instantiated knowledge bases directly in our code. If you have many knowledge bases or want to change
-the set of knowledge bases dynamically, a better way is to instantiate them from json files.
+the set of knowledge bases easily, a better way is to instantiate them from json files.
 
 The default file structure for this looks like this:
 
 ::
 
     <my_project>
-        knowledgebases
-            top_level.json
+        <my_knowledgebase_directory>
+            public.json
             <my_knowledgebase>.json
             <my_other_knowledgebase>.json
 
-The file top_level.json specifies the knowledge bases that you want to share publicly. For each local knowledge base
+The file :code:`public.json` specifies the knowledge bases that you want to share publicly. For each local knowledge base
 that you instantiate, there is also a file named :code:`<knowledgebase_identifier>.json`. It specifies the list of knowledge
 bases that the local knowledge base will talk to.
 
@@ -49,4 +49,5 @@ parameters (:code:`kwargs`) needed to instantiate it.
         }
     ]
 
-To instantiate the listed knowledge bases, call the static method :code:`Knowledgebase.load`.
+To instantiate the listed knowledge bases, call the static method :code:`Knowledgebase.instantiate_public`, passing
+your configuration directory.
