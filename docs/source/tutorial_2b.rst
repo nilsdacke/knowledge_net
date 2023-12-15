@@ -18,5 +18,5 @@ The script uses the
 class :code:`RAGKnowledgebase`, provided by the framework. Custom knowledge bases can be created by subclassing the
 :code:`Knowledgebase` base class.
 
-The :code:`streamlit_ui.py` script connects to our knowledge base and presents us with a chat user interface.
+The :code:`streamlit_ui_single.py` script connects to our knowledge base and presents us with a chat user interface.
 
