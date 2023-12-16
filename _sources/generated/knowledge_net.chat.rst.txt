@@ -1,0 +1,32 @@
+knowledge\_net.chat
+===================
+
+.. automodule:: knowledge_net.chat
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :recursive:
+
+   knowledge_net.chat.chat_event
+   knowledge_net.chat.chat_history
+

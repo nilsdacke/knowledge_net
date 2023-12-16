@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The KnowledgeNet framework &mdash; Knowledge Network 0.1 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=2709fde1"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Serving a knowledge base" href="serving.html" />
+    <link rel="prev" title="The KnowledgeNet" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Knowledge Network
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">The KnowledgeNet framework</a></li>
+<li class="toctree-l1"><a class="reference internal" href="serving.html">Serving a knowledge base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="knowledgebase.html">Creating a knowledge base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chat_history.html">Chat history</a></li>
+<li class="toctree-l1"><a class="reference internal" href="calling.html">Calling knowledge bases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="local_and_remote.html">Local and remote knowledge bases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="instantiation.html">More on knowledge base instantiation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="protocols.html">Communication protocols</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_1.html">Step 1: Setting up the environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_2.html">Step 2: Simple knowledge bases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_2b.html">Step 2, continued</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_3.html">Step 3: A knowledge network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_3b.html">Step 3, continued</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_4.html">Step 4: Build your own</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Knowledge Network</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">The KnowledgeNet framework</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/overview.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="the-knowledgenet-framework">
+<span id="overview"></span><h1>The KnowledgeNet framework<a class="headerlink" href="#the-knowledgenet-framework" title="Link to this heading"></a></h1>
+<p>The KnowledgeNet is a decentralized network of conversational knowledge bases. The KnowledgeNet framework supports its
+implementation. The framework</p>
+<ul class="simple">
+<li><p>Helps you create knowledge bases</p></li>
+<li><p>Facilitates the communication between knowledge bases</p></li>
+</ul>
+<p>The framework architecture has two layers: the knowledge kernel and the communication shell. You will find the code for
+the communication shell in the <code class="code docutils literal notranslate"><span class="pre">comm_shell</span></code> directory. It currently supports HTTP and makes it straightforward to
+implement other communication protocols.</p>
+<p>The knowledge kernel is implemented in the other source directories. The main classes are:</p>
+<ul class="simple">
+<li><p><code class="code docutils literal notranslate"><span class="pre">Knowledgebase</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">ChatHistory</span></code></p></li>
+</ul>
+<p>A <code class="code docutils literal notranslate"><span class="pre">Knowledgebase</span></code> can be a local knowledge base running in the process of your program or a remote knowledge base
+accessed for example over HTTP. The <code class="code docutils literal notranslate"><span class="pre">ChatHistory</span></code> records the interactions between the user and the knowledge
+bases.</p>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="The KnowledgeNet" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="serving.html" class="btn btn-neutral float-right" title="Serving a knowledge base" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Simon Andersson.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

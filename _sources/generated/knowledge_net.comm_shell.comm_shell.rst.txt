@@ -1,0 +1,29 @@
+knowledge\_net.comm\_shell.comm\_shell
+======================================
+
+.. automodule:: knowledge_net.comm_shell.comm_shell
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      CommShell
+   
+   
+
+   
+   
+   
+
+
+
