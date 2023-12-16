@@ -17,7 +17,7 @@ Make sure that the knowledge base servers we started are still running. Then run
 
 .. code-block:: bash
 
-   $ streamlit run streamlit_ui_with_config.py -- examples/knowledgebases/victorian
+   $ streamlit run streamlit_ui_with_config.py -- examples/knowledgebases/victorian&
 
 A chat page should open in your browser.
 
