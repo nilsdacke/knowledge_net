@@ -1,0 +1,33 @@
+knowledge\_net.comm\_shell
+==========================
+
+.. automodule:: knowledge_net.comm_shell
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :recursive:
+
+   knowledge_net.comm_shell.comm_shell
+   knowledge_net.comm_shell.comm_shell_http
+   knowledge_net.comm_shell.comm_shell_mock
+

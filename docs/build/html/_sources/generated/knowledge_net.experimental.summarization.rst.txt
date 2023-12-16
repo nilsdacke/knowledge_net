@@ -1,0 +1,31 @@
+knowledge\_net.experimental.summarization
+=========================================
+
+.. automodule:: knowledge_net.experimental.summarization
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :recursive:
+
+   knowledge_net.experimental.summarization.chat_summarizer
+

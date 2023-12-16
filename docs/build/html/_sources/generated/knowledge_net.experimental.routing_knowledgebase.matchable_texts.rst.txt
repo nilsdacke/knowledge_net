@@ -1,0 +1,29 @@
+knowledge\_net.experimental.routing\_knowledgebase.matchable\_texts
+===================================================================
+
+.. automodule:: knowledge_net.experimental.routing_knowledgebase.matchable_texts
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      MatchableTexts
+   
+   
+
+   
+   
+   
+
+
+

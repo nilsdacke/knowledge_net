@@ -1,0 +1,29 @@
+knowledge\_net.chat.chat\_history
+=================================
+
+.. automodule:: knowledge_net.chat.chat_history
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      ChatHistory
+   
+   
+
+   
+   
+   
+
+
+

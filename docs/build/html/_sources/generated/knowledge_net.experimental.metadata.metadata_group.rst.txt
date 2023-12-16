@@ -1,0 +1,29 @@
+knowledge\_net.experimental.metadata.metadata\_group
+====================================================
+
+.. automodule:: knowledge_net.experimental.metadata.metadata_group
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      MetadataGroup
+   
+   
+
+   
+   
+   
+
+
+

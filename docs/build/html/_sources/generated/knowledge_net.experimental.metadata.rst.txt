@@ -1,0 +1,32 @@
+knowledge\_net.experimental.metadata
+====================================
+
+.. automodule:: knowledge_net.experimental.metadata
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :recursive:
+
+   knowledge_net.experimental.metadata.document_group_transform
+   knowledge_net.experimental.metadata.metadata_group
+

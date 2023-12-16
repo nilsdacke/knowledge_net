@@ -2,6 +2,7 @@ credentials.py
 db
 *.ipynb
 .ipynb_checkpoints
+doctrees
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -13,7 +14,6 @@ __pycache__/
 
 # Distribution / packaging
 .Python
-build/
 develop-eggs/
 dist/
 downloads/

@@ -1,0 +1,36 @@
+﻿knowledge\_net.chat.chat\_event
+===============================
+
+.. automodule:: knowledge_net.chat.chat_event
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      CallEvent
+      ChatEvent
+      EventType
+      MessageEvent
+      ReturnEvent
+      Role
+      SummaryEvent
+      SummaryType
+   
+   
+
+   
+   
+   
+
+
+

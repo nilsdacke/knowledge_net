@@ -1,0 +1,34 @@
+﻿knowledge\_net
+==============
+
+.. automodule:: knowledge_net
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :recursive:
+
+   knowledge_net.chat
+   knowledge_net.comm_shell
+   knowledge_net.experimental
+   knowledge_net.knowledgebase
+

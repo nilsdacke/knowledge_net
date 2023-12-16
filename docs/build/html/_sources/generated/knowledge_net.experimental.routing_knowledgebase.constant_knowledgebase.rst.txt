@@ -1,0 +1,29 @@
+knowledge\_net.experimental.routing\_knowledgebase.constant\_knowledgebase
+==========================================================================
+
+.. automodule:: knowledge_net.experimental.routing_knowledgebase.constant_knowledgebase
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      ConstantKnowledgebase
+   
+   
+
+   
+   
+   
+
+
+

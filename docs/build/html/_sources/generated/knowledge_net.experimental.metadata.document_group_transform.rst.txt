@@ -1,0 +1,29 @@
+knowledge\_net.experimental.metadata.document\_group\_transform
+===============================================================
+
+.. automodule:: knowledge_net.experimental.metadata.document_group_transform
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      DocumentGroupTransform
+   
+   
+
+   
+   
+   
+
+
+

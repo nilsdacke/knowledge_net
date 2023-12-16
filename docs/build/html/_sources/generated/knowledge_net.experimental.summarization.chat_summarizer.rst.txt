@@ -1,0 +1,29 @@
+knowledge\_net.experimental.summarization.chat\_summarizer
+==========================================================
+
+.. automodule:: knowledge_net.experimental.summarization.chat_summarizer
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      ChatSummarizer
+   
+   
+
+   
+   
+   
+
+
+
