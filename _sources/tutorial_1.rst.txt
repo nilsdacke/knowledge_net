@@ -21,7 +21,7 @@ Install required libraries:
 
 .. code-block:: bash
 
-    $ pip install -r requirements.txt
+   $ pip install -r requirements.txt
 
 Currently, the framework uses OpenAI language models, so we will also need an OpenAI API key. Put it in a file named
 :code:`credentials.py` in the top-level :code:`knowledge_net` directory.
