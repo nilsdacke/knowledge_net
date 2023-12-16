@@ -16,7 +16,7 @@ if "kb" not in st.session_state:
     url = sys.argv[2]
     st.session_state.kb = Knowledgebase(identifier=kb_name,
                                         protocol='http',
-                                        protocol_details={'http': {'url': url}})
+                                        protocol_details={'url': url})
 
 for message in st.session_state.chat_history.get_messages():
     with st.chat_message(message.role):
