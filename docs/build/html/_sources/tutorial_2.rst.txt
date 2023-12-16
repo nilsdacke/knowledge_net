@@ -26,7 +26,7 @@ Our Charles Babbage knowledge base is now served over HTTP! How do we talk to it
 
 .. code-block:: bash
 
-   $ streamlit run streamlit_ui.py -- babbage http://localhost:8001
+   $ streamlit run streamlit_ui_single.py -- babbage http://localhost:8001
 
 A chat page should appear in your browser. We can now have a conversation about Babbage's life and work.
 Try for example, "Tell me about the analytical engine."
