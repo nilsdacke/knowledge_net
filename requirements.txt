@@ -1,4 +1,6 @@
 langchain
+langchain-openai
+langchain-community
 streamlit
 openai
 tiktoken

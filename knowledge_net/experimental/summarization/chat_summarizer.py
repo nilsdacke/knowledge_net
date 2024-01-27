@@ -1,7 +1,9 @@
 from textwrap import dedent
 from knowledge_net.chat.chat_event import SummaryEvent, SummaryType
 from knowledge_net.chat.chat_history import ChatHistory
-from langchain import OpenAI, PromptTemplate, LLMChain
+from langchain.prompts import PromptTemplate
+from langchain_openai import OpenAI
+from langchain.chains import LLMChain
 
 
 class ChatSummarizer:

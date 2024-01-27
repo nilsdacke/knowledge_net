@@ -3,8 +3,8 @@ import shutil
 from pathlib import Path
 
 from langchain.schema import Document
-from langchain.vectorstores import Chroma
-from langchain.embeddings.openai import OpenAIEmbeddings
+from langchain_community.vectorstores import Chroma
+from langchain_openai import OpenAIEmbeddings
 from knowledge_net.experimental.database.document_pipeline import DocumentPipeline
 from knowledge_net.experimental.database.document_processor import DocumentProcessor
 

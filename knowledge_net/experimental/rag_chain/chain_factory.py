@@ -3,7 +3,7 @@ from typing import Optional, Any
 
 from langchain.chains import ConversationalRetrievalChain
 from langchain.chains.conversational_retrieval.base import BaseConversationalRetrievalChain
-from langchain.chat_models import ChatOpenAI
+from langchain_openai import ChatOpenAI
 
 from knowledge_net.experimental.metadata.document_group_transform import DocumentGroupTransform
 from knowledge_net.experimental.rag_chain.prompts import COMBINE_DOCUMENTS_CHAT_PROMPT

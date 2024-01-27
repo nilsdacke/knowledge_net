@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from pathlib import Path
 
-from langchain.document_loaders import TextLoader
+from langchain_community.document_loaders import TextLoader
 from langchain.schema import Document
 
 from knowledge_net.experimental.database.sentence_splitter import SentenceTextSplitter
