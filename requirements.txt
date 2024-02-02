@@ -4,9 +4,12 @@ langchain-community
 streamlit
 openai
 tiktoken
-chromadb
+# chromadb
 sphinx
 sphinx-rtd-theme
 pydantic
 requests
 pytz
+# For streamlit deployment:
+pysqlite3-binary>=0.4.6
+chromadb==0.4.9
