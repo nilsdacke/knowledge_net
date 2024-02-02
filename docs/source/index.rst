@@ -7,7 +7,7 @@ The KnowledgeNet
 ========================================
 
 The KnowledgeNet provides a decentralized mechanism for sharing and finding knowledge.
-It is to Wikipedia, Google and ChatGPT what Bitcoin is to fiat currency and banks.
+It is to Wikipedia, Google and ChatGPT as Bitcoin is to fiat currency and banks.
 
 
 .. toctree::

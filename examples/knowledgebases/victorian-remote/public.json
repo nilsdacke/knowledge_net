@@ -1,0 +1,15 @@
+[
+	{
+		"identifier": "victorian-science",
+		"display_name": "Ask me anything :-)",
+		"description": "All sorts of stuff.",
+		"protocol": "local",
+		"protocol_details": {
+			"module": "knowledge_net.experimental.routing_knowledgebase.routing_knowledgebase",
+			"class": "RoutingKnowledgebase",
+			"keys": ["openai_api_key"],
+			"kwargs": {}
+		}
+	}
+]
+
