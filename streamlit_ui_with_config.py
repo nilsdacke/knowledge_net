@@ -8,6 +8,11 @@ from knowledge_net.knowledgebase.knowledgebase import Knowledgebase
 import importlib.util
 
 
+# swap the stdlib sqlite3 lib with the pysqlite3 package
+__import__('pysqlite3')
+sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+
+
 def exists_module(module_name: str) -> bool:
     """Checks if a module exists."""
     return importlib.util.find_spec(module_name) is not None
