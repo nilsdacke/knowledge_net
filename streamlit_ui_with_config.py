@@ -5,10 +5,36 @@ import streamlit as st
 from knowledge_net.chat.chat_event import MessageEvent
 from knowledge_net.chat.chat_history import ChatHistory
 from knowledge_net.knowledgebase.knowledgebase import Knowledgebase
-from credentials import openai_api_key
+import importlib.util
 
 
-configuration_directory = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("knowledgebases-galton-gpt")
+def exists_module(module_name: str) -> bool:
+    """Checks if a module exists."""
+    return importlib.util.find_spec(module_name) is not None
+
+
+def get_openai_key() -> str:
+    """Looks for the OpenAI API key in its possible locations."""
+
+    if exists_module('credentials'):
+        from credentials import openai_api_key
+        return openai_api_key
+    elif 'openai_api_key' in st.secrets:
+        return st.secrets['openai_api_key']
+    else:
+        raise ValueError("No OpenAI API key found")
+
+
+def get_configuration_directory() -> Path:
+    """Gets the configuration directory as parameter or in st.secrets."""
+
+    if len(sys.argv) > 1:
+        return Path(sys.argv[1])
+    elif 'configuration_directory' in st.secrets:
+        return Path(st.secrets['configuration_directory'])
+    else:
+        raise ValueError("No configuration directory specified")
+
 
 st.title("Ask me anything...")
 
@@ -17,8 +43,8 @@ if "chat_history" not in st.session_state:
     st.session_state.chat_history = ChatHistory()
 
 if "kb" not in st.session_state:
-    Knowledgebase.keys["openai_api_key"] = openai_api_key
-    Knowledgebase.instantiate_public(configuration_directory)
+    Knowledgebase.keys["openai_api_key"] = get_openai_key()
+    Knowledgebase.instantiate_public(get_configuration_directory())
     st.session_state.kb = Knowledgebase.single_public_instance()
 
 for message in st.session_state.chat_history.get_messages():
