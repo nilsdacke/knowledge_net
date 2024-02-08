@@ -18,6 +18,9 @@ class Knowledgebase:
     subclass :code:`Knowledgebase` and implement the :code:`_reply` method.
     """
 
+    DEFAULT_REPLY_TIMEOUT = 3
+    """Default reply time out in seconds"""
+
     _public_knowledgebases: dict[str, "Knowledgebase"] = {}
     """List of knowledge bases exposed to the outside"""
 
@@ -29,12 +32,14 @@ class Knowledgebase:
                  display_name: Optional[str] = None,
                  description: str = None,
                  protocol: str = 'local',
-                 protocol_details: Optional[Any] = None):
+                 protocol_details: Optional[Any] = None,
+                 reply_timeout: int = DEFAULT_REPLY_TIMEOUT):
         self.identifier = identifier
         self.display_name = display_name or identifier
         self.description = description
         self.protocol = protocol
         self._protocol_details = protocol_details
+        self.reply_timeout = reply_timeout
         self._connected_knowledgebases = {}
 
     def reply(self, chat_history: ChatHistory, caller: str = "user") -> ChatHistory:
@@ -44,8 +49,8 @@ class Knowledgebase:
         if self.protocol == 'local':
             continuation, error = self._reply(chat_history.copy())
         else:
-            continuation, error = \
-                CommShell.reply(self.identifier, chat_history, self.protocol, self._protocol_details)
+            continuation, error = CommShell.reply(self.identifier, chat_history, self.protocol, self._protocol_details,
+                                                  timeout=self.reply_timeout)
         return continuation.with_return_event(chat_history, error=error or "")
 
     def _reply(self, chat_history: ChatHistory) -> Tuple[ChatHistory, Optional[str]]:

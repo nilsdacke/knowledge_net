@@ -12,7 +12,7 @@ class CommShell:
     """
 
     @staticmethod
-    def reply(kb_name: str, chat_history: ChatHistory, protocol: str, protocol_details: Any) -> \
+    def reply(kb_name: str, chat_history: ChatHistory, protocol: str, protocol_details: Any, timeout: int = None) -> \
             Tuple[ChatHistory, Optional[str]]:
         """Calls the reply method on the class implementing the protocol.
 

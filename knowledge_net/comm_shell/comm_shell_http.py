@@ -41,13 +41,14 @@ class CommShellHttp:
     """Handles replies over HTTP."""
 
     @staticmethod
-    def reply(kb_name: str, chat_history: ChatHistory, protocol_details: Any) -> Tuple[ChatHistory, Optional[str]]:
+    def reply(kb_name: str, chat_history: ChatHistory, protocol_details: Any, timeout: int = None) \
+            -> Tuple[ChatHistory, Optional[str]]:
         if 'url' not in protocol_details:
             raise ValueError("Missing required 'url' in protocol details")
         headers = {'Content-type': 'application/json', 'Accept': 'application/json'}
 
         json_data = Knowledgebase.kb_and_history_as_dict(kb_name, chat_history)
-        response = requests.post(url=protocol_details['url'], json=json_data, headers=headers)
+        response = requests.post(url=protocol_details['url'], json=json_data, headers=headers, timeout=timeout)
         return ChatHistory.from_json(response.content.decode('utf-8')), None
 
 

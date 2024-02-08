@@ -11,4 +11,3 @@ pydantic
 requests
 pytz
 pysqlite3-binary>=0.4.6
-# pysqlite3-binary>=3.35
