@@ -69,9 +69,13 @@ class Knowledgebase:
     @staticmethod
     def instantiate_public(directory: Path):
         """Instantiates and shares knowledgebases from json configuration files."""
-
         instances = Knowledgebase.instances_from_json(directory, "public.json")
         Knowledgebase.set_public_knowledgebases_from_list(instances)
+
+    @staticmethod
+    def instantiate_public_from_string(json_str: str):
+        """Instantiates and shares a single remote knowledgebase from a json string."""
+        Knowledgebase.set_public_knowledgebases_from_list([Knowledgebase.remote_instance_from_string(json_str)])
 
     def make_connected_knowledgebases(self, directory: Path):
         """Instantiates the connected knowledgebases for this knowledgebase."""
@@ -119,6 +123,12 @@ class Knowledgebase:
             return [Knowledgebase.from_dict(d, directory) for d in dict_list]
         else:
             return []
+
+    @staticmethod
+    def remote_instance_from_string(json_str: str) -> "Knowledgebase":
+        """Makes a single remote knowledge base from a json specification string."""
+        d = json.loads(json_str)
+        return Knowledgebase._instantiate_remote(d)
 
     @staticmethod
     def from_dict(d: dict[str, Any], directory: Path) -> "Knowledgebase":

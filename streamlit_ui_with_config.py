@@ -41,6 +41,14 @@ def get_configuration_directory() -> Path:
         raise ValueError("No configuration directory specified")
 
 
+def make_public_knowledgebase() -> Knowledgebase:
+    if len(sys.argv) == 1 and 'public' in st.secrets:
+        Knowledgebase.instantiate_public_from_string(st.secrets['public'])
+    else:
+        Knowledgebase.instantiate_public(get_configuration_directory())
+    return Knowledgebase.single_public_instance()
+
+
 st.title("Ask me anything...")
 
 # Initialize chat
@@ -49,8 +57,8 @@ if "chat_history" not in st.session_state:
 
 if "kb" not in st.session_state:
     Knowledgebase.keys["openai_api_key"] = get_openai_key()
-    Knowledgebase.instantiate_public(get_configuration_directory())
-    st.session_state.kb = Knowledgebase.single_public_instance()
+    make_public_knowledgebase()
+    st.session_state.kb = make_public_knowledgebase()
 
 for message in st.session_state.chat_history.get_messages():
     with st.chat_message(message.role):
