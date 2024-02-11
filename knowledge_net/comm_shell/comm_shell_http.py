@@ -27,8 +27,7 @@ class NodeHTTPHandler(http.server.BaseHTTPRequestHandler):
         try:
             knowledgebase, chat_history, error = Knowledgebase.kb_and_history_from_json(post_data.decode('utf-8'))
         except ValueError:
-            self.respond_bad_request()
-            warnings.warn(f"Bad POST request from {self.get_client_ip()}")
+            self.respond_bad_request('POST')
             return
 
         if error:
@@ -44,18 +43,14 @@ class NodeHTTPHandler(http.server.BaseHTTPRequestHandler):
         self.wfile.write(continuation.encode('utf-8'))
 
     def do_GET(self):
-        warnings.warn(f"Bad GET request from {self.get_client_ip()}")
-        self.respond_bad_request()
+        self.respond_bad_request('GET')
 
-    def respond_bad_request(self):
+    def respond_bad_request(self, request_type: str = 'GET'):
         self.send_response(400)
         self.send_header('Content-type', 'text/html')
         self.end_headers()
         self.wfile.write(bytes("Bad Request", "utf-8"))
-
-    def get_client_ip(self):
-        """Gets the IP address of the client."""
-        return self.headers.get('X-Forwarded-For').split(',')[0].strip()
+        warnings.warn(f"Bad {request_type} request from {self.client_address}")
 
 
 class CommShellHttp:
