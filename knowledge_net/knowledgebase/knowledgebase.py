@@ -159,9 +159,11 @@ class Knowledgebase:
     def kb_and_history_from_json(json_data: str) -> Tuple["Knowledgebase", ChatHistory, str]:
         """Returns Knowledgebase and ChatHistory objects from json data."""
 
-        data_dict = json.loads(json_data)
-        assert 'knowledgebase' in data_dict, "Knowledgebase key ('knowledgebase') required"
-        assert 'chat_history' in data_dict, "Chat history key ('chat_history') required"
+        data_dict = json.loads(json_data)  # Will raise ValueError if not valid json
+        if 'knowledgebase' not in data_dict:
+            raise ValueError("Knowledgebase key ('knowledgebase') required")
+        if 'chat_history' not in data_dict:
+            raise ValueError("Chat history key ('chat_history') required")
 
         kb_name = data_dict['knowledgebase']
 

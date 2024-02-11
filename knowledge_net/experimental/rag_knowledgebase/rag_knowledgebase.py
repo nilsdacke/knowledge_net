@@ -24,7 +24,7 @@ class RAGKnowledgebase(Knowledgebase):
 
     def _reply(self, chat_history: ChatHistory) -> Tuple[ChatHistory, Optional[str]]:
         langchain_question = chat_history.to_langchain_question()
-        langchain_response = self.chain(langchain_question)
+        langchain_response = self.chain.invoke(langchain_question)
         return ChatHistory.from_langchain_response(langchain_response, originator=self.identifier), None
 
     @staticmethod

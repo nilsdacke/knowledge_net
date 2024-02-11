@@ -1,4 +1,5 @@
 import socketserver
+import warnings
 from typing import Any, Tuple, Optional
 import http.server
 import requests
@@ -23,7 +24,13 @@ class NodeHTTPHandler(http.server.BaseHTTPRequestHandler):
         content_length = int(self.headers['Content-Length'])
         post_data = self.rfile.read(content_length)
 
-        knowledgebase, chat_history, error = Knowledgebase.kb_and_history_from_json(post_data.decode('utf-8'))
+        try:
+            knowledgebase, chat_history, error = Knowledgebase.kb_and_history_from_json(post_data.decode('utf-8'))
+        except ValueError:
+            self.respond_bad_request()
+            warnings.warn(f"Bad POST request from {self.get_client_ip()}")
+            return
+
         if error:
             continuation = ChatHistory.error(chat_history, error).as_json()
         else:
@@ -35,6 +42,20 @@ class NodeHTTPHandler(http.server.BaseHTTPRequestHandler):
         self.end_headers()
 
         self.wfile.write(continuation.encode('utf-8'))
+
+    def do_GET(self):
+        warnings.warn(f"Bad GET request from {self.get_client_ip()}")
+        self.respond_bad_request()
+
+    def respond_bad_request(self):
+        self.send_response(400)
+        self.send_header('Content-type', 'text/html')
+        self.end_headers()
+        self.wfile.write(bytes("Bad Request", "utf-8"))
+
+    def get_client_ip(self):
+        """Gets the IP address of the client."""
+        return self.headers.get('X-Forwarded-For').split(',')[0].strip()
 
 
 class CommShellHttp:
