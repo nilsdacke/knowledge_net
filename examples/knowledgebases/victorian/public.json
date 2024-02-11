@@ -1,8 +1,8 @@
 [
 	{
 		"identifier": "victorian-science",
-		"display_name": "Ask me anything :-)",
-		"description": "All sorts of stuff.",
+		"display_name": "Victorian science",
+		"description": "Darwin, Galton, Babbage.",
 		"protocol": "local",
 		"protocol_details": {
 			"module": "knowledge_net.experimental.routing_knowledgebase.routing_knowledgebase",
