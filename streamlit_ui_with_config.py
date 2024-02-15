@@ -57,7 +57,6 @@ if "chat_history" not in st.session_state:
 
 if "kb" not in st.session_state:
     Knowledgebase.keys["openai_api_key"] = get_openai_key()
-    make_public_knowledgebase()
     st.session_state.kb = make_public_knowledgebase()
 
 for message in st.session_state.chat_history.get_messages():
