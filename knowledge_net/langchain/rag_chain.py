@@ -5,9 +5,9 @@ from langchain.chains import ConversationalRetrievalChain
 from langchain.chains.conversational_retrieval.base import BaseConversationalRetrievalChain
 from langchain_openai import ChatOpenAI
 
-from knowledge_net.experimental.metadata.document_group_transform import DocumentGroupTransform
-from knowledge_net.experimental.rag_chain.prompts import COMBINE_DOCUMENTS_CHAT_PROMPT
-from knowledge_net.experimental.rag_chain.transform_combine_chain import TransformCombineDocumentsChain
+from knowledge_net.langchain.document_group_transform import DocumentGroupTransform
+from knowledge_net.langchain.rag_prompts import COMBINE_DOCUMENTS_CHAT_PROMPT
+from knowledge_net.langchain.transform_combine_chain import TransformCombineDocumentsChain
 from knowledge_net.experimental.database.database import Database
 from knowledge_net.chat.chat_history import ChatHistory
 from knowledge_net.chat.chat_model import ChatModel

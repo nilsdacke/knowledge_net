@@ -1,5 +1,5 @@
 from langchain.schema import Document
-from knowledge_net.experimental.metadata.metadata_group import MetadataGroup
+from knowledge_net.langchain.metadata_group import MetadataGroup
 
 
 class DocumentGroupTransform:
