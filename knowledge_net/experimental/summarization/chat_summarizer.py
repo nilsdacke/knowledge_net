@@ -1,9 +1,11 @@
 from textwrap import dedent
-from knowledge_net.chat.chat_event import SummaryEvent, SummaryType
-from knowledge_net.chat.chat_history import ChatHistory
 from langchain.prompts import PromptTemplate
 from langchain_openai import OpenAI
 from langchain.chains import LLMChain
+
+from knowledge_net.chat.chat_event import SummaryEvent, SummaryType
+from knowledge_net.chat.chat_history import ChatHistory
+from knowledge_net.langchain.conversions import Conversions
 
 
 class ChatSummarizer:
@@ -24,7 +26,8 @@ class ChatSummarizer:
         self.standalone_question_chain = LLMChain(llm=self.llm, prompt=standalone_question_prompt)
 
     def make_standalone_question(self, chat_history: ChatHistory) -> str:
-        return self.standalone_question_chain(chat_history.to_langchain_question())['text'].strip()
+        langchain_question = Conversions.chat_history_to_langchain_question(chat_history)
+        return self.standalone_question_chain(langchain_question)['text'].strip()
 
     def add_standalone_question(self, chat_history: ChatHistory, originator):
         chat_history.append(SummaryEvent(summary_type=SummaryType.standalone_question,

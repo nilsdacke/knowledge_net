@@ -5,6 +5,7 @@ from langchain.chains import ConversationalRetrievalChain
 from langchain.chains.conversational_retrieval.base import BaseConversationalRetrievalChain
 from langchain_core.language_models import BaseLanguageModel
 
+from knowledge_net.langchain.conversions import Conversions
 from knowledge_net.langchain.document_group_transform import DocumentGroupTransform
 from knowledge_net.langchain.rag_prompts import COMBINE_DOCUMENTS_CHAT_PROMPT
 from knowledge_net.langchain.transform_combine_chain import TransformCombineDocumentsChain
@@ -25,9 +26,9 @@ class LangchainRAGChain(ChatModel):
                                                             llm=llm, source_descriptions=source_descriptions)
 
     def __call__(self, chat_history: ChatHistory, originator: str) -> ChatHistory:
-        langchain_question = chat_history.to_langchain_question()
+        langchain_question = Conversions.chat_history_to_langchain_question(chat_history)
         langchain_response = self.chain.invoke(langchain_question)
-        return ChatHistory.from_langchain_response(langchain_response, originator=originator)
+        return Conversions.chat_history_from_langchain_response(langchain_response, originator=originator)
 
     @staticmethod
     def conversational_chain(database_location: Path,

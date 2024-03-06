@@ -3,9 +3,7 @@ import json
 from datetime import datetime, timedelta
 from typing import Optional, Any, Tuple
 import pytz
-from langchain.schema import BaseMessage, HumanMessage, AIMessage, SystemMessage
-from knowledge_net.chat.chat_event import ChatEvent, EventType, MessageEvent, Role, CallEvent, ReturnEvent, \
-    DEFAULT_TIME_ZONE, SummaryType
+from knowledge_net.chat.chat_event import ChatEvent, EventType, CallEvent, ReturnEvent,  DEFAULT_TIME_ZONE, SummaryType
 
 
 class ChatHistory:
@@ -133,23 +131,3 @@ class ChatHistory:
     def __repr__(self):
         """Returns a developer friendly string representation."""
         return self.as_json()
-
-    @staticmethod
-    def from_langchain_response(response: dict[str, Any], originator: str = "user") -> "ChatHistory":
-        """Creates an instance representing the chat history continuation from the answer returned by Langchain."""
-        return ChatHistory([MessageEvent(role=Role.assistant, message_text=response['answer'], originator=originator)])
-
-    def to_langchain_question(self) -> dict[str, Any]:
-        """Returns a dictionary that can be passed to a Langchain conversational chain."""
-        langchain_messages = self.to_langchain_messages()
-        return {'question': langchain_messages[-1].content, 'chat_history': langchain_messages[:-1]}
-
-    def to_langchain_messages(self) -> list[BaseMessage]:
-        """Returns the message history as Langchain message instances."""
-        return [self.message_event_to_langchain(m) for m in self.get_messages()]
-
-    @staticmethod
-    def message_event_to_langchain(message_event: MessageEvent) -> BaseMessage:
-        """Converts a message event to a Langchain message instance."""
-        c = {Role.user: HumanMessage, Role.assistant: AIMessage, Role.system: SystemMessage}[message_event.role]
-        return c(content=message_event.message_text)
