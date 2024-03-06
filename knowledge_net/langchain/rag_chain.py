@@ -3,7 +3,7 @@ from typing import Optional, Any
 
 from langchain.chains import ConversationalRetrievalChain
 from langchain.chains.conversational_retrieval.base import BaseConversationalRetrievalChain
-from langchain_openai import ChatOpenAI
+from langchain_core.language_models import BaseLanguageModel
 
 from knowledge_net.langchain.document_group_transform import DocumentGroupTransform
 from knowledge_net.langchain.rag_prompts import COMBINE_DOCUMENTS_CHAT_PROMPT
@@ -19,9 +19,10 @@ class LangchainRAGChain(ChatModel):
     def __init__(self,
                  database_location: Path,
                  source_descriptions: dict[str, dict[str, dict[str, str]]],
-                 openai_api_key: str):
+                 openai_api_key: str,
+                 llm: BaseLanguageModel):
         self.chain = LangchainRAGChain.conversational_chain(database_location, openai_api_key=openai_api_key,
-                                                            source_descriptions=source_descriptions)
+                                                            llm=llm, source_descriptions=source_descriptions)
 
     def __call__(self, chat_history: ChatHistory, originator: str) -> ChatHistory:
         langchain_question = chat_history.to_langchain_question()
@@ -31,15 +32,12 @@ class LangchainRAGChain(ChatModel):
     @staticmethod
     def conversational_chain(database_location: Path,
                              openai_api_key: str,
-                             llm_model_name: Optional[str] = None,
+                             llm: BaseLanguageModel,
                              source_descriptions: Optional[dict[str, Any]] = None) -> BaseConversationalRetrievalChain:
         """Instantiates a conversational retrieval chain."""
 
-        llm_model_name = llm_model_name or LangchainRAGChain.LLM_DEFAULT_MODEL
-
         database = Database(database_location, openai_api_key=openai_api_key).load()
         retriever = database.as_retriever()
-        llm = ChatOpenAI(model_name=llm_model_name, temperature=0, openai_api_key=openai_api_key)
         chain = ConversationalRetrievalChain.from_llm(
             llm,
             retriever=retriever,
