@@ -23,9 +23,9 @@ port = int(sys.argv[5])
 
 os.environ["DEEPINFRA_API_TOKEN"] = deepinfra_api_token
 
-# LLM_DEFAULT_MODEL = "gpt-3.5-turbo"
-# llm = ChatOpenAI(model_name=LLM_DEFAULT_MODEL, temperature=0, openai_api_key=openai_api_key)
-llm = DeepInfraMixtralLLM()
+LLM_DEFAULT_MODEL = "gpt-3.5-turbo"
+llm = ChatOpenAI(model_name=LLM_DEFAULT_MODEL, temperature=0, openai_api_key=openai_api_key)
+# llm = DeepInfraMixtralLLM()
 LangchainRAGKnowledgebase(database_location=database_location,
                           source_descriptions_file=source_descriptions_file,
                           identifier=kb_name,
