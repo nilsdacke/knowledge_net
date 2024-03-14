@@ -3,7 +3,8 @@ import json
 from datetime import datetime, timedelta
 from typing import Optional, Any, Tuple
 import pytz
-from knowledge_net.chat.chat_event import ChatEvent, EventType, CallEvent, ReturnEvent,  DEFAULT_TIME_ZONE, SummaryType
+from knowledge_net.chat.chat_event import ChatEvent, EventType, CallEvent, ReturnEvent, DEFAULT_TIME_ZONE, SummaryType, \
+    MessageEvent
 
 
 class ChatHistory:
@@ -44,12 +45,15 @@ class ChatHistory:
         """Returns the message events."""
         return [e for e in self._history if e.event_type == EventType.message and (include_hidden or not e.hidden)]
 
+    def get_last_message_text(self) -> Optional[str]:
+        messages = self.get_messages()
+        return messages[-1].message_text if messages else None
+
     def get_last_question(self) -> Optional[str]:
         if self.has_summary(SummaryType.standalone_question):
             return self.get_last_event().summary_text
         else:
-            messages = self.get_messages()
-            return messages[-1].message_text if messages else None
+            return self.get_last_message_text()
 
     def append(self, event: ChatEvent):
         """Appends an event to the end of the chat history."""
@@ -115,6 +119,11 @@ class ChatHistory:
     def from_json(json_data: str) -> "ChatHistory":
         """Creates an instance from a json string."""
         return ChatHistory.from_dict_list(json.loads(json_data))
+
+    @staticmethod
+    def from_str(message: str) -> "ChatHistory":
+        """Creates an instance from a single user message string."""
+        return ChatHistory([MessageEvent(message_text=message)])
 
     def as_json(self) -> str:
         """Returns this instance as a json string."""

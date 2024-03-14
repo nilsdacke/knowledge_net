@@ -57,7 +57,12 @@ class MixtralFormatter:
 
 
 class DeepInfraMixtralLLM(DeepInfra):
-    """DeepInfra LLM with the Mixtral instruction formatting."""
+    """DeepInfra LLM with the Mixtral instruction formatting.
+
+    This is a limited implementation to support calls to invoke() from
+    LangChain chains. The __call__ method is not supported, neither
+    is ainvoke or batch processing.
+    """
 
     def __init__(self):
         model_id = "mistralai/Mixtral-8x7B-Instruct-v0.1"
