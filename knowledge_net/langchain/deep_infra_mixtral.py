@@ -1,8 +1,11 @@
-from typing import Sequence, Optional, List, Any
+from typing import Sequence, Optional, List, Any, Union
 
 from langchain.schema import BaseMessage, AIMessage, SystemMessage
 from langchain_community.llms import DeepInfra
+from langchain_core.callbacks import Callbacks
 from langchain_core.language_models.base import LanguageModelInput
+from langchain_core.outputs import LLMResult
+from langchain_core.prompt_values import PromptValue
 from langchain_core.runnables import RunnableConfig
 
 
@@ -59,7 +62,7 @@ class MixtralFormatter:
 class DeepInfraMixtralLLM(DeepInfra):
     """DeepInfra LLM with the Mixtral instruction formatting.
 
-    This is a limited implementation to support calls to invoke() from
+    This is a limited implementation to support calls from
     LangChain chains. The __call__ method is not supported, neither
     is ainvoke or batch processing.
     """
@@ -78,3 +81,15 @@ class DeepInfraMixtralLLM(DeepInfra):
         """Invokes model with the Mixtral instruction formatting."""
         prompt = MixtralFormatter.format_input(input)
         return super().invoke(prompt, config=config, stop=stop, **kwargs)
+
+    def generate_prompt(
+        self,
+        prompts: List[PromptValue],
+        stop: Optional[List[str]] = None,
+        callbacks: Optional[Union[Callbacks, List[Callbacks]]] = None,
+        **kwargs: Any,
+    ) -> LLMResult:
+        """Applies Mixtral instruction formatting to prompts."""
+        prompts[0].to_messages()
+        prompt_string = MixtralFormatter.format_input(prompts[0].to_messages())
+        return self.generate([prompt_string], stop=stop, callbacks=callbacks, **kwargs)
